@@ -29,12 +29,12 @@ namespace SciFiTPS
                 m_thirdPersonCamera.IsRotateTarget = false;
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetButtonDown("Fire2"))
             {
                 m_characterMovement.Aim();
                 m_thirdPersonCamera.SetTargetOffset(m_aimingOffset);
             }
-            if (Input.GetMouseButtonUp(1))
+            if (Input.GetButtonUp("Fire2"))
             {
                 m_characterMovement.UnAim();
                 m_thirdPersonCamera.SetDefaultOffset();
@@ -42,11 +42,11 @@ namespace SciFiTPS
 
             if (Input.GetButtonDown("Jump")) m_characterMovement.Jump();
 
-            if (Input.GetKeyDown(KeyCode.LeftControl)) m_characterMovement.Crouch();
-            if (Input.GetKeyUp(KeyCode.LeftControl)) m_characterMovement.UnCrouch();
+            if (Input.GetButtonDown("Crouch")) m_characterMovement.Crouch();
+            if (Input.GetButtonUp("Crouch")) m_characterMovement.UnCrouch();
 
-            if (Input.GetKeyDown(KeyCode.LeftShift)) m_characterMovement.Sprint();
-            if (Input.GetKeyUp(KeyCode.LeftShift)) m_characterMovement.UnSprint();
+            if (Input.GetButtonDown("Sprint")) m_characterMovement.Sprint();
+            if (Input.GetButtonUp("Sprint")) m_characterMovement.UnSprint();
         }
     }
 }

@@ -140,6 +140,13 @@ namespace SciFiTPS
             Ray downRay = new Ray(transform.position, Vector3.down);
             
             if (Physics.Raycast(downRay, out hit)) distanceToGround = hit.distance;
+
+            /*
+            if (Physics.Raycast(transform.position, -Vector3.up, out hit, 1000))
+            {
+                distanceToGround = Vector3.Distance(transform.position, hit.point);
+            }
+            */
         }
     }
 }

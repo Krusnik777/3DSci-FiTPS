@@ -5,12 +5,19 @@ namespace SciFiTPS
     public class ThirdPersonCamera : MonoBehaviour
     {
         [SerializeField] private Transform m_target;
-        [SerializeField] private float m_distance;
         [SerializeField] private float m_sensitive;
+        [SerializeField] private float m_rotateTargetLerpRate;
         [Header("RotationLimit")]
         [SerializeField] private float m_minLimitY;
         [SerializeField] private float m_maxLimitY;
+        [Header("Offset")]
         [SerializeField] private Vector3 m_offset;
+        [SerializeField] private float m_offsetChangeRate = 5.0f;
+        [Header("Distance")]
+        [SerializeField] private float m_distance;
+        [SerializeField] private float m_minDistance;
+        [SerializeField] private float m_distanceLerpRate;
+        [SerializeField] private float m_distanceHitOffset;
 
         [HideInInspector] public bool IsRotateTarget;
         [HideInInspector] public Vector2 RotationControl;
@@ -18,19 +25,13 @@ namespace SciFiTPS
         private float deltaRotationX;
         private float deltaRotationY;
 
+        private float currentDistance;
+
         private Vector3 targetOffset;
         private Vector3 defaultOffset;
 
-        public void SetTargetOffset(Vector3 offset)
-        {
-            targetOffset = offset;
-            m_offset = offset;
-        }
-        public void SetDefaultOffset()
-        {
-            targetOffset = defaultOffset;
-            m_offset = defaultOffset;
-        }
+        public void SetTargetOffset(Vector3 offset) => targetOffset = offset;
+        public void SetDefaultOffset() => targetOffset = defaultOffset;
 
         private void Start()
         {
@@ -40,22 +41,57 @@ namespace SciFiTPS
 
         private void Update()
         {
+            // Calculate rotation and translation
             deltaRotationX += RotationControl.x * m_sensitive;
             deltaRotationY += RotationControl.y * m_sensitive;
 
             deltaRotationY = ClampAngle(deltaRotationY, m_minLimitY, m_maxLimitY);
 
+            //m_offset = Vector3.MoveTowards(m_offset, targetOffset, m_offsetChangeRate * Time.deltaTime);
+
+            m_offset = Vector3.Slerp(m_offset, targetOffset, m_offsetChangeRate * Time.deltaTime);
+
+            //Quaternion finalRotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(deltaRotationY, deltaRotationX, 0), 0.25f);
             Quaternion finalRotation = Quaternion.Euler(deltaRotationY, deltaRotationX, 0);
             Vector3 finalPosition = m_target.position - (finalRotation * Vector3.forward * m_distance);
-
             finalPosition = AddLocalOffset(finalPosition);
 
-            transform.position = finalPosition;
-            transform.rotation = finalRotation;
+            // Calculate current distance
+            float targetDistance = m_distance;
 
+            RaycastHit hit;
+
+            Debug.DrawLine(m_target.position + new Vector3(0, m_offset.y, 0), finalPosition, Color.red);
+
+            if (Physics.Linecast(m_target.position + new Vector3(0, m_offset.y, 0), finalPosition, out hit))
+            {
+                //float distanceToHit = Vector3.Distance(m_target.position + new Vector3(0, m_offset.y, 0), hit.point);
+                float distanceToHit = hit.distance;
+
+                if (hit.transform != m_target)
+                {
+                    if (distanceToHit < m_distance)
+                        targetDistance = distanceToHit - m_distanceHitOffset;
+                }
+            }
+
+            currentDistance = Mathf.MoveTowards(currentDistance, targetDistance, Time.deltaTime * m_distanceLerpRate);
+            currentDistance = Mathf.Clamp(currentDistance, m_minDistance, m_distance);
+
+            // Correct camera position
+            finalPosition = m_target.position - (finalRotation * Vector3.forward * currentDistance);
+
+            // Apply transform
+            transform.rotation = finalRotation;
+            transform.position = finalPosition;
+            transform.position = AddLocalOffset(transform.position);
+
+            // Rotate target
             if (IsRotateTarget)
             {
-                m_target.rotation = Quaternion.Euler(transform.rotation.x, transform.eulerAngles.y, transform.eulerAngles.z);
+                Quaternion targetRotation = Quaternion.Euler(transform.rotation.x, transform.eulerAngles.y, transform.eulerAngles.z);
+                m_target.rotation = Quaternion.RotateTowards(m_target.rotation, targetRotation, Time.deltaTime * m_rotateTargetLerpRate);
+                //m_target.rotation = Quaternion.Slerp(m_target.rotation, targetRotation, Time.deltaTime * m_rotateTargetLerpRate);
             }
         }
 
@@ -80,8 +116,8 @@ namespace SciFiTPS
         private Vector3 AddLocalOffset(Vector3 position)
         {
             Vector3 result = position;
-            result.y += m_offset.y;
 
+            result.y += m_offset.y;
             result += transform.right * m_offset.x;
             result += transform.forward * m_offset.z;
 

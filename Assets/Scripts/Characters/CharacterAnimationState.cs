@@ -4,16 +4,22 @@ namespace SciFiTPS
 {
     public class CharacterAnimationState : MonoBehaviour
     {
+        private const float INPUT_CONTROL_LERP_RATE = 10.0f;
+
         [SerializeField] private CharacterController m_targetCharacterController;
         [SerializeField] private Animator m_targetAnimator;
         [SerializeField] private CharacterMovement m_targetCharacterMovement;
 
-        private void Update()
+        private Vector3 inputControl;
+
+        private void LateUpdate()
         {
             var movementSpeed = transform.InverseTransformDirection(m_targetCharacterController.velocity);
 
-            m_targetAnimator.SetFloat("NormalizeMovementX", movementSpeed.x / m_targetCharacterMovement.GetCurrentSpeedByState());
-            m_targetAnimator.SetFloat("NormalizeMovementZ", movementSpeed.z / m_targetCharacterMovement.GetCurrentSpeedByState());
+            inputControl = Vector3.MoveTowards(inputControl, m_targetCharacterMovement.TargetDirectionControl, Time.deltaTime * INPUT_CONTROL_LERP_RATE);
+
+            m_targetAnimator.SetFloat("NormalizeMovementX", inputControl.x);
+            m_targetAnimator.SetFloat("NormalizeMovementZ", inputControl.z);
 
             m_targetAnimator.SetBool("IsSprinting", m_targetCharacterMovement.IsSprinting);
             m_targetAnimator.SetBool("IsCrouching", m_targetCharacterMovement.IsCrouching);
