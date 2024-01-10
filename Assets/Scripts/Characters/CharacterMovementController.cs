@@ -6,6 +6,7 @@ namespace SciFiTPS
     {
         [SerializeField] private CharacterMovement m_characterMovement;
         [SerializeField] private ThirdPersonCamera m_thirdPersonCamera;
+        [SerializeField] private PlayerShooter m_playerShooter;
         [SerializeField] private Vector3 m_aimingOffset;
 
         private void Start()
@@ -27,6 +28,11 @@ namespace SciFiTPS
             else
             {
                 m_thirdPersonCamera.IsRotateTarget = false;
+            }
+
+            if (Input.GetButton("Fire1"))
+            {
+                m_playerShooter.Shoot();
             }
 
             if (Input.GetButtonDown("Fire2"))
