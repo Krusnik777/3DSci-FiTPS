@@ -70,6 +70,24 @@ namespace SciFiTPS
                 OnDeath();
             }
         }
+        /// <summary>
+        /// Applying Heal to object
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="amount">Amount to heal</param>
+        public void ApplyHeal(object sender, int amount)
+        {
+            if (m_currentHitPoins == m_hitPoints) return;
+
+            m_currentHitPoins += amount;
+
+            if (m_currentHitPoins > m_hitPoints)
+                m_currentHitPoins = m_hitPoints;
+        }
+        /// <summary>
+        /// Full restoration of hitpoints
+        /// </summary>
+        public void FullHeal() => m_currentHitPoins = m_hitPoints;
 
         #endregion
 

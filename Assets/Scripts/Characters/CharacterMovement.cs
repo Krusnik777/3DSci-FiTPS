@@ -22,7 +22,7 @@ namespace SciFiTPS
         private bool isAiming;
         public bool IsAiming => isAiming;
         private bool isJumping;
-        public bool IsJumping => IsJumping;
+        public bool IsJumping => isJumping;
         private bool isCrouching;
         public bool IsCrouching => isCrouching;
         private bool isSprinting;

@@ -20,15 +20,18 @@ namespace SciFiTPS
 
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.forward, out hit, stepLength))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, stepLength/*, 1, QueryTriggerInteraction.Ignore*/))
             {
-                Destructible dest = hit.collider.transform.root.GetComponent<Destructible>();
-
-                if (dest != null && dest != m_parent)
+                if (!hit.collider.isTrigger)
                 {
-                    dest.ApplyDamage(this, m_damage);
+                    Destructible dest = hit.collider.transform.root.GetComponent<Destructible>();
+
+                    if (dest != null && dest != m_parent)
+                    {
+                        dest.ApplyDamage(this, m_damage);
+                    }
+                    OnProjectileLifeEnd(hit.collider, hit.point, hit.normal);
                 }
-                OnProjectileLifeEnd(hit.collider, hit.point, hit.normal);
             }
 
             timer += Time.deltaTime;

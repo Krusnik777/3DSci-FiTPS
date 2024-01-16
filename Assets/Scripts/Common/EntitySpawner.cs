@@ -57,7 +57,7 @@ namespace SciFiTPS
 
                     if (dest is Drone)
                     {
-                        dest.transform.GetComponent<DroneMovement>().SetMovementArea(m_area);
+                        dest.transform.GetComponent<AIDrone>().SetMovementArea(m_area);
                     }
                 }
 

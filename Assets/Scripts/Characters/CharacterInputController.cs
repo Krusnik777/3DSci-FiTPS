@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SciFiTPS
 {
-    public class CharacterMovementController : MonoBehaviour
+    public class CharacterInputController : MonoBehaviour
     {
         [SerializeField] private CharacterMovement m_characterMovement;
         [SerializeField] private ThirdPersonCamera m_thirdPersonCamera;
@@ -32,7 +32,8 @@ namespace SciFiTPS
 
             if (Input.GetButton("Fire1"))
             {
-                m_playerShooter.Shoot();
+                if (m_characterMovement.IsAiming)
+                    m_playerShooter.Shoot();
             }
 
             if (Input.GetButtonDown("Fire2"))

@@ -37,6 +37,8 @@ namespace SciFiTPS
         {
             defaultOffset = m_offset;
             targetOffset = m_offset;
+
+            transform.SetParent(null);
         }
 
         private void Update()
