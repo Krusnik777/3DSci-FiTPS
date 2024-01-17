@@ -45,7 +45,7 @@ namespace SciFiTPS
         {
             if (m_impactEffectHandler != null)
             {
-                var impactEffect = Instantiate(m_impactEffectHandler.GetImpactPrefabByMaterial(col.material), pos, Quaternion.LookRotation(normal));
+                var impactEffect = Instantiate(m_impactEffectHandler.GetImpactPrefab(col), pos, Quaternion.LookRotation(normal));
                 impactEffect.transform.SetParent(col.transform);
             }
 

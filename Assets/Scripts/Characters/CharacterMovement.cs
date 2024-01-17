@@ -19,6 +19,9 @@ namespace SciFiTPS
 
         [HideInInspector] public Vector3 TargetDirectionControl;
 
+        private bool isInteracting;
+        public bool IsInteractiong => isInteracting;
+
         private bool isAiming;
         public bool IsAiming => isAiming;
         private bool isJumping;
@@ -37,6 +40,8 @@ namespace SciFiTPS
 
         private Vector3 directionControl;
         private Vector3 movementDirection;
+
+        public void SetInteracting(bool state) => isInteracting = state;
 
         public void Jump()
         {
@@ -112,8 +117,25 @@ namespace SciFiTPS
             return m_rifleRunSpeed;
         }
 
+        public void SetTargetDirection(Vector3 target, float forwardFactor)
+        {
+            transform.forward = (target - transform.position).normalized;
+
+            TargetDirectionControl = Vector3.forward * forwardFactor;
+        }
+
+        public void ResetTargetDirection() => TargetDirectionControl = Vector3.zero;
+        public void ResetTargetDirection(Vector3 lookTarget)
+        {
+            transform.forward = (lookTarget - transform.position).normalized;
+
+            TargetDirectionControl = Vector3.zero;
+        }
+
         private void Move()
         {
+            if (!m_characterController.enabled) return;
+
             directionControl = Vector3.MoveTowards(directionControl, TargetDirectionControl, Time.deltaTime * m_accelerationRate);
 
             if (IsGrounded)

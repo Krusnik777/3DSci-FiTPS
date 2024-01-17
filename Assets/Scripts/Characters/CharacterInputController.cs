@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SciFiTPS
@@ -5,6 +6,7 @@ namespace SciFiTPS
     public class CharacterInputController : MonoBehaviour
     {
         [SerializeField] private CharacterMovement m_characterMovement;
+        [SerializeField] private EntityActionCollector m_actionCollector;
         [SerializeField] private ThirdPersonCamera m_thirdPersonCamera;
         [SerializeField] private PlayerShooter m_playerShooter;
         [SerializeField] private Vector3 m_aimingOffset;
@@ -17,6 +19,12 @@ namespace SciFiTPS
 
         private void Update()
         {
+            if (m_characterMovement.IsInteractiong)
+            {
+                if (m_thirdPersonCamera.RotationControl != Vector2.zero) m_thirdPersonCamera.RotationControl = Vector2.zero;
+                return;
+            }
+
             m_characterMovement.TargetDirectionControl = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
             m_thirdPersonCamera.RotationControl = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
@@ -28,6 +36,19 @@ namespace SciFiTPS
             else
             {
                 m_thirdPersonCamera.IsRotateTarget = false;
+            }
+
+            if (Input.GetButtonDown("Use"))
+            {
+                if (!m_characterMovement.IsAiming && !m_characterMovement.IsCrouching)
+                {
+                    List<EntityContextAction> actionList = m_actionCollector.GetActionList<EntityContextAction>();
+
+                    for (int i = 0; i < actionList.Count; i++)
+                    {
+                        actionList[i].StartAction();
+                    }
+                }
             }
 
             if (Input.GetButton("Fire1"))

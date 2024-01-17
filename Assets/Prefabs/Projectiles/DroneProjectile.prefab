@@ -66,8 +66,10 @@ MonoBehaviour:
   m_defaultImpactEffectPrefab: {fileID: 3436140858127006848, guid: 10d48ec4d1ba24a4684e45f781f3f24f, type: 3}
   m_stoneImpactEffectPrefab: {fileID: 3436140858127006848, guid: c975d3b0e9cedde458779bc0f147b6d5, type: 3}
   m_metalImpactEffectPrefab: {fileID: 3436140858127006848, guid: 7d7adc47b2d948b4a83ecd4e93c53772, type: 3}
+  m_fleshImpactEffectPrefab: {fileID: 3436140858127006848, guid: cd64a9768bd49044aa657f3a9f27e552, type: 3}
   m_stoneMaterial: {fileID: 13400000, guid: fbafc557984d31a40878b34f437bc852, type: 2}
   m_metalMaterial: {fileID: 13400000, guid: fe343adfe92c5394e884953f6c5cb810, type: 2}
+  m_fleshMaterial: {fileID: 13400000, guid: 8ac61b8b821eb60468252d6cb76e64b5, type: 2}
 --- !u!1 &6264878647111305464
 GameObject:
   m_ObjectHideFlags: 0

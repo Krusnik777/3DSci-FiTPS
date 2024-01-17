@@ -1,10 +1,12 @@
+using System.Collections;
 using UnityEngine;
 
 namespace SciFiTPS
 {
     public enum InteractType
     {
-        PickupItem
+        PickupItem,
+        EnteringCode
     }
 
     [System.Serializable]
@@ -31,10 +33,45 @@ namespace SciFiTPS
         {
             if (!IsCanStart) return;
 
+            //base.StartAction();
+
+            //m_owner.position = Properties.InteractTransform.position;
+            StartCoroutine(MoveToInteractPosition());
+        }
+
+        public override void EndAction()
+        {
+            base.EndAction();
+
+            CharacterMovement movement = m_owner.GetComponent<CharacterMovement>();
+            movement.SetInteracting(false);
+        }
+
+        private IEnumerator MoveToInteractPosition()
+        {
+            CharacterMovement movement = m_owner.GetComponent<CharacterMovement>();
+            movement.SetInteracting(true);
+
+            if (movement.IsSprinting) movement.UnSprint();
+
+            var targetPosition = Properties.InteractTransform.position;
+
+            var elapsed = 0.0f;
+
+            while (Vector3.Distance(m_owner.position, targetPosition) >= 0.5f)
+            {
+                float forwardFactor = Mathf.Lerp(0.0f, 1.0f, elapsed / 1.0f);
+
+                movement.SetTargetDirection(targetPosition, forwardFactor);
+
+                elapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            movement.ResetTargetDirection(targetPosition);
+
             base.StartAction();
-
-            m_owner.position = Properties.InteractTransform.position;
-
         }
     }
 }
