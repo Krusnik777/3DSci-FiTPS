@@ -8,6 +8,8 @@ namespace SciFiTPS
         [SerializeField] private string m_actionAnimationName;
         [SerializeField] private float m_timeDuration;
 
+        public Animator Animator => m_animator;
+
         private Timer m_timer;
 
         private bool isPlayingAnimation;

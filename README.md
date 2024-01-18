@@ -2,4 +2,4 @@
 Training Project in Third-Person Shooter genre for Windows
 
 ### Latest TestSample
-[Download](https://github.com/Krusnik777/3DSci-FiTPS/releases/tag/0.2)
+[Download](https://github.com/Krusnik777/3DSci-FiTPS/releases/tag/0.3)

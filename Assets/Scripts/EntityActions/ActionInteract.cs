@@ -6,7 +6,8 @@ namespace SciFiTPS
     public enum InteractType
     {
         PickupItem,
-        EnteringCode
+        EnteringCode,
+        ClimbLadder
     }
 
     [System.Serializable]
@@ -14,15 +15,22 @@ namespace SciFiTPS
     {
         [SerializeField] private Transform m_interactTransform;
         public Transform InteractTransform => m_interactTransform;
+        [SerializeField] private Transform m_endPoint;
+        public Transform EndPoint => m_endPoint;
+        [SerializeField] private Transform m_finalPosition;
+        public Transform FinalPosition => m_finalPosition;
     }
 
     public class ActionInteract : EntityContextAction
     {
-        [SerializeField] private Transform m_owner;
+        [SerializeField] protected Transform m_owner;
         [SerializeField] private InteractType m_type;
+        [SerializeField] private UnityEngine.Animations.Rigging.Rig m_leftHandRig;
+        [SerializeField] private bool m_hideWeapon;
+        [SerializeField] private GameObject m_weaponMeshGameObject;
         public InteractType Type => m_type;
 
-        private new ActionInteractProperties Properties;
+        protected new ActionInteractProperties Properties;
 
         public override void SetProperties(EntityActionProperties props)
         {
@@ -33,6 +41,8 @@ namespace SciFiTPS
         {
             if (!IsCanStart) return;
 
+            m_leftHandRig.weight = 0;
+
             //base.StartAction();
 
             //m_owner.position = Properties.InteractTransform.position;
@@ -42,6 +52,10 @@ namespace SciFiTPS
         public override void EndAction()
         {
             base.EndAction();
+
+            m_leftHandRig.weight = 1;
+
+            if (m_hideWeapon) m_weaponMeshGameObject.SetActive(true);
 
             CharacterMovement movement = m_owner.GetComponent<CharacterMovement>();
             movement.SetInteracting(false);
@@ -70,6 +84,8 @@ namespace SciFiTPS
             }
 
             movement.ResetTargetDirection(targetPosition);
+
+            if (m_hideWeapon) m_weaponMeshGameObject.SetActive(false);
 
             base.StartAction();
         }

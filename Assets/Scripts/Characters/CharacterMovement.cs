@@ -22,6 +22,9 @@ namespace SciFiTPS
         private bool isInteracting;
         public bool IsInteractiong => isInteracting;
 
+        private bool isClimbing;
+        public bool IsClimbing => isClimbing;
+
         private bool isAiming;
         public bool IsAiming => isAiming;
         private bool isJumping;
@@ -89,6 +92,16 @@ namespace SciFiTPS
             isAiming = false;
         }
 
+        public void Climb()
+        {
+            isClimbing = true;
+        }
+
+        public void UnClimb()
+        {
+            isClimbing = false;
+        }
+
         private void Start()
         {
             baseCharacterHeight = m_characterController.height;
@@ -134,7 +147,7 @@ namespace SciFiTPS
 
         private void Move()
         {
-            if (!m_characterController.enabled) return;
+            if (!m_characterController.enabled || isClimbing) return;
 
             directionControl = Vector3.MoveTowards(directionControl, TargetDirectionControl, Time.deltaTime * m_accelerationRate);
 
