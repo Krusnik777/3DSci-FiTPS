@@ -12,6 +12,7 @@ namespace SciFiTPS
         protected float timer;
 
         protected Destructible m_parent;
+        public Destructible Parent => m_parent;
 
         protected virtual void Update()
         {

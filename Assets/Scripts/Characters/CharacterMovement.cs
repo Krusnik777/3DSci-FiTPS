@@ -46,6 +46,8 @@ namespace SciFiTPS
         private Vector3 directionControl;
         private Vector3 movementDirection;
 
+        public float CurrentSpeed => GetCurrentSpeedByState();
+
         public void SetInteracting(bool state) => isInteracting = state;
 
         public void Jump()

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SciFiTPS
@@ -6,28 +7,35 @@ namespace SciFiTPS
     public class AIDrone : MonoBehaviour
     {
         [SerializeField] private CubeArea m_movementArea;
-        [SerializeField] private float m_angryDistance;
+        [SerializeField] private ColliderViewer m_colliderViewer;
 
         private Drone m_drone;
 
         private Vector3 m_targetPosition;
         private Transform m_shootTarget;
 
-        private Transform m_player;
-
         private void SetMovementTarget() => m_targetPosition = m_movementArea.GetRandomInsideZone();
-
-        public void SetMovementArea(CubeArea area)
+        private Transform FindShootTarget()
         {
-            m_movementArea = area;
+            List<Destructible> targets = Destructible.GetAllNonTeamMembers(m_drone.TeamId);
+
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (m_colliderViewer.IsObjectVisible(targets[i].gameObject))
+                    return targets[i].transform;
+            }
+
+            return null;
         }
+
+        public void SetMovementArea(CubeArea area) => m_movementArea = area;
+        public void SetShootTarget(Transform target) => m_shootTarget = target;
 
         private void Start()
         {
             m_drone = GetComponent<Drone>();
             m_drone.EventOnDeath.AddListener(OnDroneDeath);
-
-            m_player = GameObject.FindGameObjectWithTag("Player").transform;
+            m_drone.EventOnDamaged += OnGetDamage;
 
             //currentDirection = transform.forward; // For OLD
         }
@@ -35,6 +43,7 @@ namespace SciFiTPS
         private void OnDestroy()
         {
             m_drone.EventOnDeath.RemoveListener(OnDroneDeath);
+            m_drone.EventOnDamaged -= OnGetDamage;
         }
 
         private void Update()
@@ -44,33 +53,11 @@ namespace SciFiTPS
 
         private void UpdateAI()
         {
-            // Update movement position
+            ActionFindShootingTarget();
 
-            if (transform.position == m_targetPosition) SetMovementTarget();
+            ActionMove();
 
-            if (Physics.Linecast(transform.position, m_targetPosition)) SetMovementTarget();
-
-            // Find Fire Position
-            if (Vector3.Distance(transform.position, m_player.position) <= m_angryDistance)
-            {
-                m_shootTarget = m_player;
-            }
-
-            // Move
-            m_drone.MoveTo(m_targetPosition);
-
-            if (m_shootTarget != null)
-            {
-                m_drone.LookAt(m_shootTarget.position);
-            }
-            else m_drone.LookAt(m_targetPosition);
-
-            // Fire
-
-            if (m_shootTarget != null)
-            {
-                m_drone.Fire(m_shootTarget.position);
-            }
+            ActionFire();
         }
 
         private void OnDroneDeath()
@@ -78,13 +65,55 @@ namespace SciFiTPS
             enabled = false;
         }
 
-        #if UNITY_EDITOR
-        private void OnDrawGizmos()
+        private void OnGetDamage(Destructible other)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, m_angryDistance);
+            ActionAssignTargetAllTeammates(other.transform);
         }
-        #endif
+
+        private void ActionFindShootingTarget()
+        {
+            Transform potentialTarget = FindShootTarget();
+
+            if (potentialTarget != null) ActionAssignTargetAllTeammates(potentialTarget);
+        }
+
+        private void ActionMove()
+        {
+            if (transform.position == m_targetPosition) SetMovementTarget();
+
+            if (Physics.Linecast(transform.position, m_targetPosition)) SetMovementTarget();
+
+            m_drone.MoveTo(m_targetPosition);
+
+            if (m_shootTarget != null)
+            {
+                m_drone.LookAt(m_shootTarget.position);
+            }
+            else m_drone.LookAt(m_targetPosition);
+        }
+
+        private void ActionFire()
+        {
+            if (m_shootTarget != null)
+            {
+                m_drone.Fire(m_shootTarget.position);
+            }
+        }
+
+        private void ActionAssignTargetAllTeammates(Transform other)
+        {
+            List<Destructible> teammates = Destructible.GetAllTeamMembers(m_drone.TeamId);
+
+            foreach (var dest in teammates)
+            {
+                AIDrone ai = dest.transform.root.GetComponent<AIDrone>();
+
+                if (ai != null && ai.enabled)
+                {
+                    ai.SetShootTarget(other);
+                }
+            }
+        }
 
         #region OLD
         /*

@@ -35,12 +35,16 @@ namespace SciFiTPS
         [SerializeField] protected UnityEvent m_eventOnDeath;
         public UnityEvent EventOnDeath => m_eventOnDeath;
 
+        [SerializeField] private UnityEvent m_eventOnGetDamage;
+        public UnityAction<Destructible> EventOnDamaged;
+
         public const int TeamIdNeutral = 0;
 
         [SerializeField] private int m_teamId;
         public int TeamId => m_teamId;
 
         private bool isDead = false;
+        public bool IsDead => isDead;
 
         #endregion
 
@@ -63,6 +67,14 @@ namespace SciFiTPS
             if (m_indestrutible || isDead) return;
 
             m_currentHitPoins -= damage;
+
+            if (sender is Projectile)
+            {
+                var projectile = sender as Projectile;
+                EventOnDamaged?.Invoke(projectile.Parent);
+            }
+
+            m_eventOnGetDamage?.Invoke();
 
             if (m_currentHitPoins <= 0)
             {
@@ -99,6 +111,68 @@ namespace SciFiTPS
             m_eventOnDeath?.Invoke();
 
             Destroy(gameObject);
+        }
+
+        public static Destructible FindNearest(Vector3 position)
+        {
+            float minDist = float.MaxValue;
+            Destructible target = null;
+
+            foreach (var dest in m_allDestructibles)
+            {
+                float curDist = Vector3.Distance(dest.transform.position, position);
+
+                if (curDist < minDist)
+                {
+                    minDist = curDist;
+                    target = dest;
+                }
+            }
+
+            return target;
+        }
+
+        public static Destructible FindNearestNonTeamMember(Destructible destructible)
+        {
+            float minDist = float.MaxValue;
+            Destructible target = null;
+
+            foreach (var dest in m_allDestructibles)
+            {
+                float curDist = Vector3.Distance(dest.transform.position, destructible.transform.position);
+
+                if (curDist < minDist && destructible.TeamId != dest.TeamId)
+                {
+                    minDist = curDist;
+                    target = dest;
+                }
+            }
+
+            return target;
+        }
+
+        public static List<Destructible> GetAllTeamMembers(int teamId)
+        {
+            List<Destructible> teammates = new List<Destructible>();
+
+            foreach (var dest in m_allDestructibles)
+            {
+                if (dest.TeamId == teamId) teammates.Add(dest);
+            }
+
+            return teammates;
+        }
+
+        public static List<Destructible> GetAllNonTeamMembers(int teamId)
+        {
+            List<Destructible> nonTeammates = new List<Destructible>();
+
+            foreach (var dest in m_allDestructibles)
+            {
+                if (dest.TeamId != teamId) nonTeammates.Add(dest);
+            }
+
+            return nonTeammates;
         }
 
         private static HashSet<Destructible> m_allDestructibles;

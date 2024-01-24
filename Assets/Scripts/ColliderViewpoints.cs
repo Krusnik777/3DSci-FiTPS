@@ -36,7 +36,7 @@ namespace SciFiTPS
                     RaycastHit hit;
 
                     Debug.DrawLine(point, m_points[i], Color.blue);
-                    if (Physics.Raycast(point, (m_points[i] = point).normalized, out hit, viewDistance * 2))
+                    if (Physics.Raycast(point, (m_points[i] - point).normalized, out hit, viewDistance * 2))
                     {
                         if (hit.collider == m_collider) return true;
                     }

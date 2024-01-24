@@ -10,6 +10,17 @@ namespace SciFiTPS
     {
         [SerializeField] private Vector3 m_area;
 
+        public static CubeArea CreateCubeArea(Vector3 position, Vector3 areaSize)
+        {
+            GameObject gameObject = new GameObject("SearchArea");
+            var area = gameObject.AddComponent<CubeArea>();
+            area.SetAreaSize(areaSize);
+
+            return area;
+        }
+
+        public void SetAreaSize(Vector3 area) => m_area = area;
+
         public Vector3 GetRandomInsideZone()
         {
             Vector3 result = transform.position;
