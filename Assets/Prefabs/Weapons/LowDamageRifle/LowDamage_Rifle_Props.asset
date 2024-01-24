@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3903870e1559f6e4b908c52b8aa83756, type: 3}
+  m_Name: LowDamage_Rifle_Props
+  m_EditorClassIdentifier: 
+  m_mode: 0
+  m_projectilePrefab: {fileID: 5170269630053475617, guid: c2eeb706d4070df45bc70395501f296a, type: 3}
+  m_rateOfFire: 0.1
+  m_energyUsage: 2
+  m_energyRegenPerSecond: 2
+  m_energyAmountToStartFire: 20
+  m_spreadShotRange: 0.5
+  m_spreadShotDistanceFactor: 0.05
+  m_launchSFX: {fileID: 8300000, guid: 0ff450135b13acb4daf1e9e05e211007, type: 3}

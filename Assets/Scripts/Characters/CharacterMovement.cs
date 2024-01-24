@@ -19,6 +19,8 @@ namespace SciFiTPS
 
         [HideInInspector] public Vector3 TargetDirectionControl;
 
+        public bool UpdatePosition = true;
+
         private bool isInteracting;
         public bool IsInteractiong => isInteracting;
 
@@ -166,7 +168,7 @@ namespace SciFiTPS
 
             movementDirection += Physics.gravity * Time.deltaTime;
 
-            m_characterController.Move(movementDirection * Time.deltaTime);
+            if (UpdatePosition) m_characterController.Move(movementDirection * Time.deltaTime);
         }
 
         private void UpdateDistanceToGround()
