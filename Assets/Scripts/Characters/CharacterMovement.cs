@@ -39,6 +39,7 @@ namespace SciFiTPS
         private float distanceToGround;
         public float DistanceToGround => distanceToGround;
         public bool IsGrounded => distanceToGround < 0.01f;
+        public bool IsNotMoving => TargetDirectionControl == Vector3.zero;
 
         private float baseCharacterHeight;
         private float baseCharacterHeightOffset;

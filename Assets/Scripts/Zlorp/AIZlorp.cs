@@ -23,12 +23,19 @@ namespace SciFiTPS
         [SerializeField] private NavMeshAgent m_agent;
         [SerializeField] private PatrolPath m_patrolPath;
         [SerializeField] private ColliderViewer m_colliderViewer;
+        [SerializeField] private Listener m_listener;
         [SerializeField] private float m_aimingDistance;
         [SerializeField] private int m_patrolPathNodeIndex = 0;
         [Header("Search")]
         [SerializeField] private float m_searchTime = 10f;
         [SerializeField] private float m_searchRange = 7f;
         [SerializeField] private float m_lookAroundTime = 2f;
+        [Header("SideDetection")]
+        [SerializeField] private float m_sideDetectionTime = 5f;
+        [SerializeField] private float m_resetDetectionFactor = 1f; 
+        [Header("Indicators")]
+        [SerializeField] private DetectionIndicator m_detectionIndicator;
+        public DetectionIndicator DetectionIndicator => m_detectionIndicator;
 
         private NavMeshPath m_navMeshPath;
         private PatrolPathNode currentPathNode;
@@ -38,8 +45,12 @@ namespace SciFiTPS
         private Vector3 seekTarget;
 
         private Coroutine searchRoutine;
+        private Vector3 searchPoint;
 
-        public void SetPursueTarget(Transform target) => pursueTarget = target;
+        private float sideDetectionTimer;
+        private bool sideDetectionEnabled = true;
+
+        private void UpdatePotentialTarget() => potentialTarget = Destructible.FindNearestNonTeamMember(m_zlorp)?.gameObject;
 
         private bool CheckAgentReachedDestination()
         {
@@ -79,9 +90,20 @@ namespace SciFiTPS
             return false;
         }
 
+        public void SetPursueTarget(Transform target) => pursueTarget = target;
+
+        public void StopSearch()
+        {
+            if (searchRoutine != null)
+            {
+                StopCoroutine(searchRoutine);
+                searchRoutine = null;
+            }
+        }
+
         private void Start()
         {
-            potentialTarget = Destructible.FindNearestNonTeamMember(m_zlorp)?.gameObject;
+            UpdatePotentialTarget();
 
             m_characterMovement.UpdatePosition = false;
             m_navMeshPath = new NavMeshPath();
@@ -123,11 +145,37 @@ namespace SciFiTPS
 
             if (m_aIBehaviour == AIBehaviour.PursueTarget)
             {
+                /*
+                if (pursueTarget.TryGetComponent(out Destructible destTarget))
+                {
+                    if (destTarget.IsDead)
+                    {
+                        pursueTarget = null;
+                        UpdatePotentialTarget();
+
+                        StartBehaviour(AIBehaviour.PatrolRandom);
+
+                        return;
+                    }
+                }*/
+
                 m_agent.CalculatePath(pursueTarget.position, m_navMeshPath);
                 m_agent.SetPath(m_navMeshPath);
 
                 if (Vector3.Distance(transform.position, pursueTarget.position) <= m_aimingDistance)
                 {
+                    if (transform.forward != (pursueTarget.position - transform.position).normalized)
+                    {
+                        var headingDirection = (pursueTarget.position - transform.position).normalized;
+
+                        var targetRotation = Quaternion.LookRotation(headingDirection);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50f * Time.deltaTime);
+
+                        var angle = Quaternion.Angle(transform.rotation, targetRotation);
+
+                        if (angle <= 5) transform.forward = headingDirection;
+                    }
+
                     m_characterMovement.Aim();
 
                     m_zlorp.Fire(pursueTarget.position + new Vector3(0, 1, 0));
@@ -145,6 +193,8 @@ namespace SciFiTPS
 
                     if (CheckAgentReachedDestination())
                     {
+                        searchPoint = m_agent.transform.position;
+
                         searchRoutine = StartCoroutine(SearchAround());
                     }
                 }
@@ -178,14 +228,10 @@ namespace SciFiTPS
         {
             if (potentialTarget == null) return;
 
-            if (m_colliderViewer.IsObjectVisible(potentialTarget))
-            {
-                if (searchRoutine != null)
-                {
-                    StopCoroutine(searchRoutine);
-                    searchRoutine = null;
-                }
+            ActionCheckPeripheralVision();
 
+            if (m_colliderViewer.IsObjectVisible(potentialTarget) || m_listener.IsHeardTarget(potentialTarget.GetComponent<ListenTarget>()))
+            {
                 pursueTarget = potentialTarget.transform;
                 ActionAssignTargetAllTeammates(pursueTarget);
             }
@@ -210,8 +256,47 @@ namespace SciFiTPS
 
                 if (ai != null && ai.enabled)
                 {
+                    ai.StopSearch();
+
                     ai.SetPursueTarget(other);
                     ai.StartBehaviour(AIBehaviour.PursueTarget);
+                }
+            }
+        }
+
+        private void ActionCheckPeripheralVision()
+        {
+            if (!sideDetectionEnabled)
+            {
+                sideDetectionTimer = 0;
+                return;
+            }
+
+            if (m_colliderViewer.CheckPeripheralVision(potentialTarget) && !m_colliderViewer.IsObjectVisible(potentialTarget))
+            {
+                sideDetectionTimer += Time.deltaTime;
+
+                m_detectionIndicator.Show("?..", Color.cyan, sideDetectionTimer / m_sideDetectionTime);
+
+                if (sideDetectionTimer >= m_sideDetectionTime)
+                {
+                    pursueTarget = potentialTarget.transform;
+                    ActionAssignTargetAllTeammates(pursueTarget);
+                }
+            }
+            else
+            {
+                if (sideDetectionTimer >= 0.1f)
+                {
+                    sideDetectionTimer = Mathf.Lerp(sideDetectionTimer, 0, m_resetDetectionFactor * Time.deltaTime);
+
+                    m_detectionIndicator.Show("?..", Color.cyan, sideDetectionTimer / m_sideDetectionTime);
+                }
+                else
+                {
+                    sideDetectionTimer = 0;
+
+                    m_detectionIndicator.Hide();
                 }
             }
         }
@@ -224,6 +309,8 @@ namespace SciFiTPS
             {
                 m_agent.isStopped = true;
                 m_characterMovement.UnAim();
+
+                sideDetectionEnabled = true;
             }
 
             if (state == AIBehaviour.PatrolRandom)
@@ -231,6 +318,8 @@ namespace SciFiTPS
                 m_agent.isStopped = false;
                 m_characterMovement.UnAim();
                 SetDestinationByPathNode(m_patrolPath.GetRandomPathNode());
+
+                sideDetectionEnabled = true;
             }
 
             if (state == AIBehaviour.CirclePatrol)
@@ -238,17 +327,25 @@ namespace SciFiTPS
                 m_agent.isStopped = false;
                 m_characterMovement.UnAim();
                 SetDestinationByPathNode(m_patrolPath.GetNextNode(ref m_patrolPathNodeIndex));
+
+                sideDetectionEnabled = true;
             }
 
             if (state == AIBehaviour.PursueTarget)
             {
                 m_agent.isStopped = false;
+                if (state != m_aIBehaviour) m_detectionIndicator.ShowAndHide("!", Color.red);
+
+                sideDetectionEnabled = false;
             }
 
             if (state == AIBehaviour.SeekTarget)
             {
                 m_agent.isStopped = false;
                 m_characterMovement.UnAim();
+                if (state != m_aIBehaviour) m_detectionIndicator.ShowAndHide("?", Color.yellow);
+
+                sideDetectionEnabled = false;
             }
 
             m_aIBehaviour = state;
@@ -298,10 +395,13 @@ namespace SciFiTPS
 
             yield return new WaitForSeconds(seconds);
 
-            if (TryGetRandomPoint(m_agent.transform.position, m_searchRange, out seekTarget))
+            if (searchRoutine != null)
             {
-                m_agent.CalculatePath(seekTarget, m_navMeshPath);
-                m_agent.SetPath(m_navMeshPath);
+                if (TryGetRandomPoint(searchPoint, m_searchRange, out seekTarget))
+                {
+                    m_agent.CalculatePath(seekTarget, m_navMeshPath);
+                    m_agent.SetPath(m_navMeshPath);
+                }
             }
 
             m_agent.isStopped = false;

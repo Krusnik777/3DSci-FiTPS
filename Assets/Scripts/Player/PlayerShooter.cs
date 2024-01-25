@@ -11,6 +11,8 @@ namespace SciFiTPS
         [SerializeField] private Camera m_camera;
         [SerializeField] private RectTransform m_imageSigh;
 
+        public bool IsFired => m_spreadShootRig.IsFired;
+
         public void Shoot()
         {
             if (!m_characterMovement.IsAiming) return;

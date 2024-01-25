@@ -141,7 +141,7 @@ namespace SciFiTPS
             {
                 float curDist = Vector3.Distance(dest.transform.position, destructible.transform.position);
 
-                if (curDist < minDist && destructible.TeamId != dest.TeamId)
+                if (curDist < minDist && dest.TeamId != destructible.TeamId && !dest.IsDead)
                 {
                     minDist = curDist;
                     target = dest;
