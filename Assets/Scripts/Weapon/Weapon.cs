@@ -87,7 +87,7 @@ namespace SciFiTPS
             m_primaryEnergy = m_primaryMaxEnergy;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (m_refireTimer > 0)
                 m_refireTimer -= Time.deltaTime;

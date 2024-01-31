@@ -33,10 +33,12 @@ namespace SciFiTPS
         public void SetTargetOffset(Vector3 offset) => targetOffset = offset;
         public void SetDefaultOffset() => targetOffset = defaultOffset;
 
+        public void SetTarget(Transform target) => m_target = target;
+
         private void Start()
         {
             defaultOffset = m_offset;
-            targetOffset = m_offset;
+            if (targetOffset == Vector3.zero) targetOffset = m_offset;
 
             transform.SetParent(null);
         }

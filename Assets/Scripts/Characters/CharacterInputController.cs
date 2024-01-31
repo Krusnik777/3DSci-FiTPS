@@ -8,7 +8,8 @@ namespace SciFiTPS
         [SerializeField] private CharacterMovement m_characterMovement;
         [SerializeField] private EntityActionCollector m_actionCollector;
         [SerializeField] private ThirdPersonCamera m_thirdPersonCamera;
-        [SerializeField] private PlayerShooter m_playerShooter;
+        [SerializeField] private CameraShooter m_playerShooter;
+        [SerializeField] private SpreadShootRig m_spreadShootRig;
         [SerializeField] private Vector3 m_aimingOffset;
 
         private void Start()
@@ -54,7 +55,13 @@ namespace SciFiTPS
             if (Input.GetButton("Fire1"))
             {
                 if (m_characterMovement.IsAiming)
-                    m_playerShooter.Shoot();
+                {
+                    if (m_playerShooter.Weapon.CanFire)
+                    {
+                        m_playerShooter.Shoot();
+                        m_spreadShootRig.Spread();
+                    }
+                }
             }
 
             if (Input.GetButtonDown("Fire2"))
