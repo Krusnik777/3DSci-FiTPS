@@ -9,14 +9,16 @@ namespace SciFiTPS
     {
         [SerializeField] private InteractType m_interactType;
         [SerializeField] private int m_interactAmount;
-        [SerializeField] private ActionInteractProperties m_actionProperties;
-        [SerializeField] private UnityEvent m_eventOnInteract;
+        [SerializeField] private UnityEvent m_eventOnStartInteract;
+        [SerializeField] private UnityEvent m_eventOnEndInteract;
+        [SerializeField] protected ActionInteractProperties m_actionProperties;
 
-        public UnityEvent EventOnInteract => m_eventOnInteract;
+        public UnityEvent EventOnStartInteract => m_eventOnStartInteract;
+        public UnityEvent EventOnEndInteract => m_eventOnEndInteract;
 
         protected ActionInteract m_action;
 
-        private GameObject m_owner;
+        protected GameObject m_owner;
 
         private ActionInteract GetActionInteract(EntityActionCollector entityActionCollector)
         {
@@ -82,17 +84,21 @@ namespace SciFiTPS
         private void OnActionStarted()
         {
             OnStartAction(m_owner);
+
+            m_interactAmount--;
+
+            m_eventOnStartInteract?.Invoke();
         }
 
         private void OnActionEnded()
         {
             m_action.IsCanStart = false;
+            m_action.IsCanEnd = false;
+
             m_action.EventOnStart.RemoveListener(OnActionStarted);
             m_action.EventOnEnd.RemoveListener(OnActionEnded);
 
-            m_eventOnInteract?.Invoke();
-
-            m_interactAmount--;
+            m_eventOnEndInteract?.Invoke();
 
             OnEndAction(m_owner);
         }

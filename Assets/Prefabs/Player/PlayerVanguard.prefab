@@ -305,10 +305,12 @@ MonoBehaviour:
   m_actionAnimationName: ClimbLadder
   m_timeDuration: 0.1
   IsCanStart: 0
+  IsCanEnd: 0
   m_owner: {fileID: 8668755050481637125}
   m_type: 2
   m_leftHandRig: {fileID: 3547061986852682984}
   m_hideWeapon: 1
+  m_moveToInteractPoint: 1
   m_weaponMeshGameObject: {fileID: 665298885258351035}
   m_actionEndAnimationName: EndClimbing
   m_climbSpeed: 2
@@ -1383,6 +1385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_target: {fileID: 8668755050481637125}
+  m_aim: {fileID: 7910061725081569871}
   m_sensitive: 5
   m_rotateTargetLerpRate: 800
   m_minLimitY: -40
@@ -1517,10 +1520,11 @@ GameObject:
   - component: {fileID: 8668755050481637125}
   - component: {fileID: 1569396791566738486}
   - component: {fileID: 3780333360390923357}
-  - component: {fileID: 3402141382004415691}
-  - component: {fileID: 4719563620390063205}
   - component: {fileID: 1817179642884050280}
+  - component: {fileID: 3402141382004415691}
   - component: {fileID: 6410914255398870034}
+  - component: {fileID: 4719563620390063205}
+  - component: {fileID: 2311796031155874610}
   - component: {fileID: 6359677927818316940}
   - component: {fileID: 4955472470705316466}
   m_Layer: 0
@@ -1603,47 +1607,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3402141382004415691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4798692429313524668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f166d1cf06757704c9e2b338886b0ade, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_characterController: {fileID: 1569396791566738486}
-  m_accelerationRate: 5
-  m_rifleRunSpeed: 5
-  m_rifleSprintSpeed: 8
-  m_aimingWalkSpeed: 2.5
-  m_aimingRunSpeed: 4
-  m_crouchMoveSpeed: 2
-  m_jumpSpeed: 4
-  m_crouchHeight: 0.9
-  TargetDirectionControl: {x: 0, y: 0, z: 0}
-  UpdatePosition: 1
---- !u!114 &4719563620390063205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4798692429313524668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dabc2f78c47d3454c92536f6daa63517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_characterMovement: {fileID: 3402141382004415691}
-  m_actionCollector: {fileID: 6410914255398870034}
-  m_thirdPersonCamera: {fileID: 2320451489102573426}
-  m_playerShooter: {fileID: 5631162292910376756}
-  m_spreadShootRig: {fileID: 7996039066875891544}
-  m_aimingOffset: {x: 0.8, y: 1.7, z: 2}
 --- !u!114 &1817179642884050280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1678,6 +1641,29 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_teamId: 0
+--- !u!114 &3402141382004415691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4798692429313524668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f166d1cf06757704c9e2b338886b0ade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_characterController: {fileID: 1569396791566738486}
+  m_accelerationRate: 5
+  m_rifleRunSpeed: 5
+  m_rifleSprintSpeed: 8
+  m_aimingWalkSpeed: 2.5
+  m_aimingRunSpeed: 4
+  m_crouchMoveSpeed: 2
+  m_jumpSpeed: 4
+  m_crouchHeight: 0.9
+  TargetDirectionControl: {x: 0, y: 0, z: 0}
+  UpdatePosition: 1
 --- !u!114 &6410914255398870034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1691,6 +1677,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_parentTransformWithActions: {fileID: 6730677967341331168}
+--- !u!114 &4719563620390063205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4798692429313524668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dabc2f78c47d3454c92536f6daa63517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_characterMovement: {fileID: 3402141382004415691}
+  m_thirdPersonCamera: {fileID: 2320451489102573426}
+  m_playerShooter: {fileID: 5631162292910376756}
+  m_spreadShootRig: {fileID: 7996039066875891544}
+  m_aimingOffset: {x: 0.8, y: 1.7, z: 2}
+--- !u!114 &2311796031155874610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4798692429313524668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495d168876c2dac4793e043c6a268d29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_characterMovement: {fileID: 3402141382004415691}
+  m_actionCollector: {fileID: 6410914255398870034}
 --- !u!114 &6359677927818316940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1858,6 +1875,7 @@ Transform:
   - {fileID: 3541313943746891830}
   - {fileID: 2703266138871150247}
   - {fileID: 8764701062992874299}
+  - {fileID: 5648348097595092179}
   m_Father: {fileID: 8668755050481637125}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5999726715491880854
@@ -1914,10 +1932,12 @@ MonoBehaviour:
   m_actionAnimationName: EnteringCode
   m_timeDuration: 0.1
   IsCanStart: 0
+  IsCanEnd: 0
   m_owner: {fileID: 8668755050481637125}
   m_type: 1
   m_leftHandRig: {fileID: 3547061986852682984}
   m_hideWeapon: 0
+  m_moveToInteractPoint: 1
   m_weaponMeshGameObject: {fileID: 665298885258351035}
 --- !u!1 &6014790957162805240
 GameObject:
@@ -2749,6 +2769,72 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &8426678306773149517
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5648348097595092179}
+  - component: {fileID: 2984345609973991607}
+  m_Layer: 0
+  m_Name: Action_UseVehicle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5648348097595092179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426678306773149517}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6730677967341331168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2984345609973991607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426678306773149517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55aa99245261b07478039d7b307e2f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_eventOnStart:
+    m_PersistentCalls:
+      m_Calls: []
+  m_eventOnEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  m_animator: {fileID: 4147065779931858841}
+  m_actionAnimationName: 
+  m_timeDuration: 0.1
+  IsCanStart: 0
+  IsCanEnd: 0
+  m_owner: {fileID: 8668755050481637125}
+  m_type: 3
+  m_leftHandRig: {fileID: 3547061986852682984}
+  m_hideWeapon: 0
+  m_moveToInteractPoint: 0
+  m_weaponMeshGameObject: {fileID: 665298885258351035}
+  m_characterController: {fileID: 1569396791566738486}
+  m_characterMovement: {fileID: 3402141382004415691}
+  m_characterInputController: {fileID: 4719563620390063205}
+  m_visualModel: {fileID: 501214971759559497}
+  m_camera: {fileID: 2320451489102573426}
 --- !u!1 &8653818497095755762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,10 +2936,12 @@ MonoBehaviour:
   m_actionAnimationName: PickupItem
   m_timeDuration: 0.1
   IsCanStart: 0
+  IsCanEnd: 0
   m_owner: {fileID: 8668755050481637125}
   m_type: 0
   m_leftHandRig: {fileID: 3547061986852682984}
   m_hideWeapon: 0
+  m_moveToInteractPoint: 1
   m_weaponMeshGameObject: {fileID: 665298885258351035}
 --- !u!1 &9010512854510602240
 GameObject:

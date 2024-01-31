@@ -58,6 +58,11 @@ namespace SciFiTPS
             isJumping = true;
         }
 
+        public void UnJump()
+        {
+            isJumping = false;
+        }
+
         public void Crouch()
         {
             if (!IsGrounded || isSprinting) return;
@@ -163,7 +168,9 @@ namespace SciFiTPS
                 if (isJumping)
                 {
                     movementDirection.y = m_jumpSpeed;
-                    isJumping = false;
+
+                    CancelInvoke("UnJump");
+                    Invoke("UnJump", 0.1f);
                 }
 
                 movementDirection = transform.TransformDirection(movementDirection);

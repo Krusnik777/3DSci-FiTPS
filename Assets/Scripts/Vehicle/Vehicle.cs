@@ -11,6 +11,8 @@ namespace SciFiTPS
 
         protected Vector3 m_targetInputControl;
 
+        private bool isEnabled = false;
+
         public virtual float LinearVelocity => 0;
 
         public float NormalizedLinearVelocity
@@ -25,6 +27,11 @@ namespace SciFiTPS
 
         public void SetTargetControl(Vector3 control) => m_targetInputControl = control.normalized;
 
+        public void EnableSFX(bool state)
+        {
+            isEnabled = state;
+        }
+
         protected virtual void Update()
         {
             UpdateEngineSFX();
@@ -32,10 +39,17 @@ namespace SciFiTPS
 
         private void UpdateEngineSFX()
         {
-            if (m_engineSFX != null)
+            if (isEnabled)
             {
-                m_engineSFX.pitch = 1.0f + NormalizedLinearVelocity * m_engineSFXModifier;
-                m_engineSFX.volume = 0.5f + NormalizedLinearVelocity;
+                if (m_engineSFX != null)
+                {
+                    m_engineSFX.pitch = 1.0f + NormalizedLinearVelocity * m_engineSFXModifier;
+                    m_engineSFX.volume = 0.5f + NormalizedLinearVelocity;
+                }
+            }
+            else
+            {
+                m_engineSFX.volume = 0.0f;
             }
         }
 

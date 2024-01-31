@@ -11,7 +11,7 @@ namespace SciFiTPS
         [SerializeField] private Transform m_rightWheelMesh;
         [SerializeField] private bool m_motor;
         [SerializeField] private bool m_steering;
-
+        
         public bool Motor => m_motor;
         public bool Steering => m_steering;
 
@@ -61,8 +61,11 @@ namespace SciFiTPS
         [SerializeField] private float m_maxMotorTorque;
         [SerializeField] private float m_brakeTorque;
         [SerializeField] private float m_maxSteerAngle;
+        [SerializeField] private float m_controlFactor = 1f;
 
         private Rigidbody m_rigidBody;
+
+        private Vector3 vehicleControl;
 
         public override float LinearVelocity => m_rigidBody.velocity.magnitude;
 
@@ -75,9 +78,12 @@ namespace SciFiTPS
 
         private void FixedUpdate()
         {
-            float targetMotorTorque = m_maxMotorTorque * m_targetInputControl.z;
-            float targetBrakeTorque = m_brakeTorque * m_targetInputControl.y;
-            float targetSteerAngle = m_maxSteerAngle * m_targetInputControl.x;
+            vehicleControl = Vector3.MoveTowards(vehicleControl, m_targetInputControl, Time.fixedDeltaTime * m_controlFactor);
+
+            float targetMotorTorque = m_maxMotorTorque * vehicleControl.z;
+            float targetBrakeTorque = m_brakeTorque * vehicleControl.y;
+            float targetSteerAngle = m_maxSteerAngle * vehicleControl.x;
+
 
             for (int i = 0; i < m_wheelAxles.Length; i++)
             {

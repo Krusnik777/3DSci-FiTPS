@@ -7,7 +7,8 @@ namespace SciFiTPS
     {
         PickupItem,
         EnteringCode,
-        ClimbLadder
+        ClimbLadder,
+        UseVehicle
     }
 
     [System.Serializable]
@@ -27,6 +28,7 @@ namespace SciFiTPS
         [SerializeField] private InteractType m_type;
         [SerializeField] private UnityEngine.Animations.Rigging.Rig m_leftHandRig;
         [SerializeField] private bool m_hideWeapon;
+        [SerializeField] private bool m_moveToInteractPoint = true;
         [SerializeField] private GameObject m_weaponMeshGameObject;
         public InteractType Type => m_type;
 
@@ -46,11 +48,18 @@ namespace SciFiTPS
             //base.StartAction();
 
             //m_owner.position = Properties.InteractTransform.position;
-            StartCoroutine(MoveToInteractPosition());
+
+            if (m_moveToInteractPoint)
+                StartCoroutine(MoveToInteractPosition());
+            else base.StartAction();
+
+            Invoke("SetCanEnd", 0.1f);
         }
 
         public override void EndAction()
         {
+            if (!IsCanEnd) return;
+
             base.EndAction();
 
             m_leftHandRig.weight = 1;
@@ -60,6 +69,13 @@ namespace SciFiTPS
             CharacterMovement movement = m_owner.GetComponent<CharacterMovement>();
             movement.SetInteracting(false);
         }
+
+        private void SetCanEnd()
+        {
+            IsCanEnd = true;
+        }
+
+        #region Coroutines
 
         private IEnumerator MoveToInteractPosition()
         {
@@ -89,5 +105,7 @@ namespace SciFiTPS
 
             base.StartAction();
         }
+
+        #endregion
     }
 }

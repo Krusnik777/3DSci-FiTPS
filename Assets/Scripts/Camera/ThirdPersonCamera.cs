@@ -5,6 +5,7 @@ namespace SciFiTPS
     public class ThirdPersonCamera : MonoBehaviour
     {
         [SerializeField] private Transform m_target;
+        [SerializeField] private Transform m_aim;
         [SerializeField] private float m_sensitive;
         [SerializeField] private float m_rotateTargetLerpRate;
         [Header("RotationLimit")]
@@ -22,6 +23,11 @@ namespace SciFiTPS
         [HideInInspector] public bool IsRotateTarget;
         [HideInInspector] public Vector2 RotationControl;
 
+        public Transform Aim => m_aim;
+
+        private float defaultMinRotationLimit;
+        private float defaultMaxRotationLimit;
+
         private float deltaRotationX;
         private float deltaRotationY;
 
@@ -33,12 +39,27 @@ namespace SciFiTPS
         public void SetTargetOffset(Vector3 offset) => targetOffset = offset;
         public void SetDefaultOffset() => targetOffset = defaultOffset;
 
+        public void SetDefaultRotationLimit()
+        {
+            m_minLimitY = defaultMinRotationLimit;
+            m_maxLimitY = defaultMaxRotationLimit;
+        }
+
+        public void SetRotationLimit(float minRotationLimit, float maxRotationLimit)
+        {
+            m_minLimitY = minRotationLimit;
+            m_maxLimitY = maxRotationLimit;
+        }
+
         public void SetTarget(Transform target) => m_target = target;
 
         private void Start()
         {
             defaultOffset = m_offset;
-            if (targetOffset == Vector3.zero) targetOffset = m_offset;
+            targetOffset = m_offset;
+
+            defaultMinRotationLimit = m_minLimitY;
+            defaultMaxRotationLimit = m_maxLimitY;
 
             transform.SetParent(null);
         }

@@ -5,7 +5,16 @@ namespace SciFiTPS
     public class ShootingVehicleInputControl : VehicleInputControl
     {
         [SerializeField] private CameraShooter m_cameraShooter;
+        [SerializeField] private Turret m_turret;
         [SerializeField] private Transform m_aimPoint;
+
+        public override void AssignCamera(ThirdPersonCamera camera)
+        {
+            base.AssignCamera(camera);
+            m_cameraShooter.AssignCamera(camera.GetComponent<Camera>());
+            m_aimPoint = camera.Aim;
+            m_turret.SetAim(m_aimPoint);
+        }
 
         protected override void Update()
         {

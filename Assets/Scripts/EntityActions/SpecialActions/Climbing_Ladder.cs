@@ -13,8 +13,12 @@ namespace SciFiTPS
 
         public override void EndAction()
         {
+            if (!IsCanEnd) return;
+
             StartCoroutine(MoveToEndPosition());
         }
+
+        #region Coroutines
 
         private IEnumerator MoveToEndPosition()
         {
@@ -68,5 +72,7 @@ namespace SciFiTPS
 
             base.EndAction();
         }
+
+        #endregion
     }
 }

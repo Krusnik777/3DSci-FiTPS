@@ -10,12 +10,14 @@ namespace SciFiTPS
         public Weapon Weapon => m_weapon;
         public Camera Camera => m_camera;
 
+        public void AssignCamera(Camera camera) => m_camera = camera;
+
         public void Shoot()
         {
             RaycastHit hit;
             Ray ray = m_camera.ScreenPointToRay(m_imageSigh.position);
 
-            if (Physics.Raycast(ray, out hit, 1000))
+            if (Physics.Raycast(ray, out hit, 1000,1,QueryTriggerInteraction.Ignore))
             {
                 m_weapon.FirePointLookAt(hit.point);
             }

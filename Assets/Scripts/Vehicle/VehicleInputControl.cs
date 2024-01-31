@@ -7,13 +7,17 @@ namespace SciFiTPS
         [SerializeField] private Vehicle m_vehicle;
         [SerializeField] private ThirdPersonCamera m_camera;
         [SerializeField] private Vector3 m_cameraOffset;
+        [Header("Camera Rotation Limits")]
+        [SerializeField] private float m_minLimitY;
+        [SerializeField] private float m_maxLimitY;
 
-        public void AssignCamera(ThirdPersonCamera camera)
+        public virtual void AssignCamera(ThirdPersonCamera camera)
         { 
             m_camera = camera;
             m_camera.IsRotateTarget = false;
             m_camera.SetTargetOffset(m_cameraOffset);
             m_camera.SetTarget(m_vehicle.transform);
+            m_camera.SetRotationLimit(m_minLimitY, m_maxLimitY);
         }
 
         protected virtual void Start()

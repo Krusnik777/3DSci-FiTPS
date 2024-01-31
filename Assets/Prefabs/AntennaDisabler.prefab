@@ -324,11 +324,23 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
+      propertyPath: m_eventOnEndInteract.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
       propertyPath: m_eventOnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
       propertyPath: m_eventOnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8862232914688194332}
+    - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
+      propertyPath: m_eventOnEndInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
+      propertyPath: m_eventOnEndInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 8862232914688194332}
     - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
@@ -340,11 +352,27 @@ PrefabInstance:
       value: DisableAllActiveDrones
       objectReference: {fileID: 0}
     - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
+      propertyPath: m_eventOnEndInteract.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
+      propertyPath: m_eventOnEndInteract.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DisableAllActiveDrones
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
       propertyPath: m_eventOnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: SciFiTPS.DroneDisabler, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
+      propertyPath: m_eventOnEndInteract.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SciFiTPS.DroneDisabler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
       propertyPath: m_eventOnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866472384509984229, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
+      propertyPath: m_eventOnEndInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8038026203070283248, guid: 52d09ebc9265e9b43b5ad5e874030041, type: 3}
