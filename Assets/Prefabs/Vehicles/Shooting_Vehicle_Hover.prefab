@@ -1893,7 +1893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_nickname: 
   m_indestrutible: 0
-  m_hitPoints: 300
+  m_hitPoints: 1000
   m_eventOnDeath:
     m_PersistentCalls:
       m_Calls: []

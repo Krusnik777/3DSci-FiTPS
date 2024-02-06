@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_nickname: 
   m_indestrutible: 0
-  m_hitPoints: 100
+  m_hitPoints: 50
   m_eventOnDeath:
     m_PersistentCalls:
       m_Calls:
@@ -504,6 +504,7 @@ MonoBehaviour:
   m_viewingAngle: 150
   m_viewingDistance: 10
   m_viewHeight: 0
+  m_sideViewAngle: 0
 --- !u!1 &1285108938874619383
 GameObject:
   m_ObjectHideFlags: 0

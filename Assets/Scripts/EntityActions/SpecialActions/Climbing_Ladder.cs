@@ -22,8 +22,7 @@ namespace SciFiTPS
 
         private IEnumerator MoveToEndPosition()
         {
-            var startPosition = m_owner.position;
-            var targetPosition = startPosition + new Vector3(0, Properties.EndPoint.position.y, 0);
+            var targetPosition = new Vector3(m_owner.position.x, Properties.EndPoint.position.y, m_owner.position.z);
 
             CharacterMovement movement = m_owner.GetComponent<CharacterMovement>();
             movement.Climb();
@@ -41,7 +40,6 @@ namespace SciFiTPS
 
             yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.25f);
 
-            startPosition = m_owner.position;
             targetPosition = Properties.FinalPosition.position;
 
             while (targetPosition.y - m_owner.position.y >= 0.01f)
@@ -51,13 +49,13 @@ namespace SciFiTPS
                 yield return null;
             }
 
-            startPosition = m_owner.position = new Vector3(m_owner.position.x, targetPosition.y, m_owner.position.z);
+            var startPosition = m_owner.position = new Vector3(m_owner.position.x, targetPosition.y, m_owner.position.z);
 
             var elapsed = 0.0f;
 
             while (Vector3.Distance(m_owner.position, targetPosition) >= 0.05f)
             {
-                m_owner.position = Vector3.MoveTowards(startPosition, targetPosition, elapsed /m_climbSpeed * m_finalMoveFactor);
+                m_owner.position = Vector3.MoveTowards(startPosition, targetPosition, elapsed / m_climbSpeed * m_finalMoveFactor);
 
                 elapsed += Time.deltaTime;
 
