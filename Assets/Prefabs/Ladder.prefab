@@ -161,7 +161,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.5, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.5, z: 0.6}
 --- !u!114 &3440990937357586035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,13 +176,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_interactType: 2
   m_interactAmount: -1
+  m_eventOnStartInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  m_eventOnEndInteract:
+    m_PersistentCalls:
+      m_Calls: []
   m_actionProperties:
     m_interactTransform: {fileID: 1041831565644245473}
     m_endPoint: {fileID: 5789515235858287141}
     m_finalPosition: {fileID: 4489936022905723464}
-  m_eventOnInteract:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8572509462813454517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1224,7 +1227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4153912175970658196, guid: c6343595ad64c3645bfed84e9ceb5c4b, type: 3}
       propertyPath: m_activeRadius
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6879576578760142786, guid: c6343595ad64c3645bfed84e9ceb5c4b, type: 3}
       propertyPath: m_PresetInfoIsWorld

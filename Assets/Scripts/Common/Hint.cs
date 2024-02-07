@@ -17,7 +17,7 @@ namespace SciFiTPS
             m_canvas = GetComponent<Canvas>();
             m_canvas.worldCamera = Camera.main;
             m_lookTransform = Camera.main.transform;
-            m_target = GameObject.FindGameObjectWithTag("Player").transform;
+            m_target = Player.Instance.transform;
         }
 
         private void Update()

@@ -698,7 +698,7 @@ MonoBehaviour:
   m_patrolPath: {fileID: 0}
   m_colliderViewer: {fileID: 490676555863216910}
   m_listener: {fileID: 6770087120159164443}
-  m_aimingDistance: 6
+  m_aimingDistance: 20
   m_patrolPathNodeIndex: 0
   m_searchTime: 30
   m_searchRange: 7

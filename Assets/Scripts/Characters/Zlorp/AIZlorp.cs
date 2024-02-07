@@ -50,7 +50,9 @@ namespace SciFiTPS
         private float sideDetectionTimer;
         private bool sideDetectionEnabled = true;
 
-        private void UpdatePotentialTarget() => potentialTarget = Destructible.FindNearestNonTeamMember(m_zlorp)?.gameObject;
+        private bool isPlayerDetected;
+
+        private void UpdatePotentialTarget() => potentialTarget = Player.Instance.gameObject;
 
         private bool CheckAgentReachedDestination()
         {
@@ -111,11 +113,13 @@ namespace SciFiTPS
             StartBehaviour(m_aIBehaviour);
 
             m_zlorp.EventOnDamaged += OnGetDamage;
+            m_zlorp.EventOnDeath.AddListener(OnDeath);
         }
 
         private void OnDestroy()
         {
             m_zlorp.EventOnDamaged -= OnGetDamage;
+            m_zlorp.EventOnDeath.RemoveListener(OnDeath);
         }
 
         private void Update()
@@ -131,7 +135,11 @@ namespace SciFiTPS
             {
                 ActionAssignTargetAllTeammates(other.transform);
             }
+        }
 
+        private void OnDeath()
+        {
+            SendPlayerStopPursue();
         }
 
         private void UpdateAI()
@@ -178,6 +186,14 @@ namespace SciFiTPS
 
                     m_characterMovement.Aim();
 
+                    /*
+                    if (Vector3.Angle(pursueTarget.position - transform.position, transform.forward) < 10)
+                    {
+                        m_agent.isStopped = true;
+                    }*/
+
+                    m_agent.isStopped = true;
+
                     m_zlorp.Fire(pursueTarget.position + new Vector3(0, 1, 0));
                 }
                 else m_characterMovement.UnAim();
@@ -190,6 +206,8 @@ namespace SciFiTPS
                 {
                     m_agent.CalculatePath(seekTarget, m_navMeshPath);
                     m_agent.SetPath(m_navMeshPath);
+
+                    SendPlayerStartPursue();
 
                     if (CheckAgentReachedDestination())
                     {
@@ -209,6 +227,8 @@ namespace SciFiTPS
 
             if (m_aIBehaviour == AIBehaviour.PatrolRandom)
             {
+                SendPlayerStopPursue();
+
                 if (CheckAgentReachedDestination())
                 {
                     StartCoroutine(SetBehaviourOnTime(AIBehaviour.Idle, currentPathNode.IdleTime));
@@ -217,6 +237,8 @@ namespace SciFiTPS
 
             if (m_aIBehaviour == AIBehaviour.CirclePatrol)
             {
+                SendPlayerStopPursue();
+
                 if (CheckAgentReachedDestination())
                 {
                     StartCoroutine(SetBehaviourOnTime(AIBehaviour.Idle, currentPathNode.IdleTime));
@@ -232,8 +254,7 @@ namespace SciFiTPS
 
             if (m_colliderViewer.IsObjectVisible(potentialTarget) || m_listener.IsHeardTarget(potentialTarget.GetComponent<ListenTarget>()))
             {
-                pursueTarget = potentialTarget.transform;
-                ActionAssignTargetAllTeammates(pursueTarget);
+                StartPursue();
             }
             else
             {
@@ -244,6 +265,14 @@ namespace SciFiTPS
                     StartBehaviour(AIBehaviour.SeekTarget);
                 }
             }
+        }
+
+        private void StartPursue()
+        {
+            SendPlayerStartPursue();
+
+            pursueTarget = potentialTarget.transform;
+            ActionAssignTargetAllTeammates(pursueTarget);
         }
 
         private void ActionAssignTargetAllTeammates(Transform other)
@@ -280,8 +309,7 @@ namespace SciFiTPS
 
                 if (sideDetectionTimer >= m_sideDetectionTime)
                 {
-                    pursueTarget = potentialTarget.transform;
-                    ActionAssignTargetAllTeammates(pursueTarget);
+                    StartPursue();
                 }
             }
             else
@@ -365,6 +393,24 @@ namespace SciFiTPS
 
             float factor = m_agent.velocity.magnitude / m_agent.speed;
             m_characterMovement.TargetDirectionControl = transform.InverseTransformDirection(m_agent.velocity.normalized) * factor;
+        }
+
+        private void SendPlayerStartPursue()
+        {
+            if (!isPlayerDetected)
+            {
+                Player.Instance.StartPursue();
+                isPlayerDetected = true;
+            }
+        }
+
+        private void SendPlayerStopPursue()
+        {
+            if (isPlayerDetected)
+            {
+                Player.Instance.StopPursue();
+                isPlayerDetected = false;
+            }
         }
 
         #region Coroutines

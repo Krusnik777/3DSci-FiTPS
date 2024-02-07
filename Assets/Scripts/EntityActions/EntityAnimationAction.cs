@@ -28,9 +28,11 @@ namespace SciFiTPS
 
         public override void EndAction()
         {
-            base.EndAction();
+            Debug.Log("here");
 
             m_timer.EventOnTick -= OnTimerTick;
+
+            base.EndAction();
         }
 
         private void OnTimerTick()
@@ -42,7 +44,7 @@ namespace SciFiTPS
 
             if (isPlayingAnimation)
             {
-                if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName(m_actionAnimationName))
+                if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName(m_actionAnimationName) || (m_animator.GetCurrentAnimatorStateInfo(0).IsName(m_actionAnimationName) && m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9))
                 {
                     isPlayingAnimation = false;
 

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_mode: 0
   m_projectilePrefab: {fileID: 5170269630053475617, guid: 0a9b88dc054a91b4dad60d6eac76827c, type: 3}
-  m_rateOfFire: 0.1
+  m_rateOfFire: 0.15
   m_energyUsage: 2
-  m_energyRegenPerSecond: 8
+  m_energyRegenPerSecond: 6
   m_energyAmountToStartFire: 50
   m_spreadShotRange: 0.5
   m_spreadShotDistanceFactor: 0.05
