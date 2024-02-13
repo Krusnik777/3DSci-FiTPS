@@ -47,6 +47,8 @@ namespace SciFiTPS
         private Vector3 directionControl;
         private Vector3 movementDirection;
 
+        RaycastHit slopeHit;
+
         public float CurrentSpeed => GetCurrentSpeedByState();
 
         public void SetInteracting(bool state) => isInteracting = state;
@@ -155,14 +157,49 @@ namespace SciFiTPS
             TargetDirectionControl = Vector3.zero;
         }
 
+        private bool OnSlope()
+        {
+
+            if (Physics.Raycast(transform.position,Vector3.down*0.1f, out slopeHit, m_characterController.height * 0.5f + 0.3f))
+            {
+                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                return angle < m_characterController.slopeLimit && angle != 0;
+            }
+
+            return false;
+        }
+
+        private Vector3 GetSlopeMovementDirection()
+        {
+            return Vector3.ProjectOnPlane(directionControl, slopeHit.normal).normalized;
+        }
+
         private void Move()
         {
             if (!m_characterController.enabled || isClimbing) return;
 
             directionControl = Vector3.MoveTowards(directionControl, TargetDirectionControl, Time.deltaTime * m_accelerationRate);
 
+            /*if (OnSlope())
+            {
+                Debug.Log("Here SLOPE");
+                //movementDirection = GetSlopeMovementDirection() * GetCurrentSpeedByState();
+                movementDirection = directionControl * GetCurrentSpeedByState();
+
+                if (isJumping)
+                {
+                    movementDirection.y = m_jumpSpeed;
+
+                    CancelInvoke("UnJump");
+                    Invoke("UnJump", 0.1f);
+                }
+
+                movementDirection = transform.TransformDirection(movementDirection);
+            }*/
+
             if (IsGrounded)
             {
+                Debug.Log("Here2");
                 movementDirection = directionControl * GetCurrentSpeedByState();
 
                 if (isJumping)

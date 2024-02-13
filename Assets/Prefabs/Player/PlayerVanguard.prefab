@@ -304,6 +304,7 @@ MonoBehaviour:
   m_animator: {fileID: 4147065779931858841}
   m_actionAnimationName: ClimbLadder
   m_timeDuration: 0.1
+  m_endActionByAnimation: 0
   IsCanStart: 0
   IsCanEnd: 0
   m_owner: {fileID: 8668755050481637125}
@@ -500,6 +501,7 @@ MonoBehaviour:
   m_animator: {fileID: 4147065779931858841}
   m_actionAnimationName: ActionDeath
   m_timeDuration: 0.1
+  m_endActionByAnimation: 1
 --- !u!1 &1277405612930054556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,7 +1710,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.25
+  m_Radius: 0.21
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.001
@@ -2079,6 +2081,7 @@ MonoBehaviour:
   m_animator: {fileID: 4147065779931858841}
   m_actionAnimationName: EnteringCode
   m_timeDuration: 0.1
+  m_endActionByAnimation: 0
   IsCanStart: 0
   IsCanEnd: 0
   m_owner: {fileID: 8668755050481637125}
@@ -3020,6 +3023,7 @@ MonoBehaviour:
   m_animator: {fileID: 4147065779931858841}
   m_actionAnimationName: 
   m_timeDuration: 0.1
+  m_endActionByAnimation: 0
   IsCanStart: 0
   IsCanEnd: 0
   m_owner: {fileID: 8668755050481637125}
@@ -3133,6 +3137,7 @@ MonoBehaviour:
   m_animator: {fileID: 4147065779931858841}
   m_actionAnimationName: PickupItem
   m_timeDuration: 0.1
+  m_endActionByAnimation: 0
   IsCanStart: 0
   IsCanEnd: 0
   m_owner: {fileID: 8668755050481637125}

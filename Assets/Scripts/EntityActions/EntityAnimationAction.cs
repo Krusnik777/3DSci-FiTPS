@@ -7,6 +7,7 @@ namespace SciFiTPS
         [SerializeField] private Animator m_animator;
         [SerializeField] private string m_actionAnimationName;
         [SerializeField] private float m_timeDuration;
+        [SerializeField] private bool m_endActionByAnimation;
 
         public Animator Animator => m_animator;
 
@@ -28,8 +29,6 @@ namespace SciFiTPS
 
         public override void EndAction()
         {
-            Debug.Log("here");
-
             m_timer.EventOnTick -= OnTimerTick;
 
             base.EndAction();
@@ -44,7 +43,7 @@ namespace SciFiTPS
 
             if (isPlayingAnimation)
             {
-                if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName(m_actionAnimationName) || (m_animator.GetCurrentAnimatorStateInfo(0).IsName(m_actionAnimationName) && m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9))
+                if ((!m_endActionByAnimation && !m_animator.GetCurrentAnimatorStateInfo(0).IsName(m_actionAnimationName)) || (m_endActionByAnimation && m_animator.GetCurrentAnimatorStateInfo(0).IsName(m_actionAnimationName) && m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99))
                 {
                     isPlayingAnimation = false;
 
