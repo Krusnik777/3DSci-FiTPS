@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33000010962773192}
   - component: {fileID: 23000011032719706}
   - component: {fileID: 111000010521468030}
+  - component: {fileID: 1861206488469967629}
   m_Layer: 0
   m_Name: Structure_v1
   m_TagString: Untagged
@@ -101,6 +102,28 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!64 &1861206488469967629
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010365443526}
+  m_Material: {fileID: 13400000, guid: fe343adfe92c5394e884953f6c5cb810, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 070a3a60299b4124b95896f4986b5c4d, type: 3}
 --- !u!1 &1000010414886642
 GameObject:
   m_ObjectHideFlags: 0

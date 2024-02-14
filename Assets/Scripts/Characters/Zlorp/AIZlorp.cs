@@ -116,6 +116,11 @@ namespace SciFiTPS
             m_zlorp.EventOnDeath.AddListener(OnDeath);
         }
 
+        private void OnDisable()
+        {
+            StopSearch();
+        }
+
         private void OnDestroy()
         {
             m_zlorp.EventOnDamaged -= OnGetDamage;

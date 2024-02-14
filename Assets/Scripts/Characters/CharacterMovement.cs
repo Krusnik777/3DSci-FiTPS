@@ -199,7 +199,6 @@ namespace SciFiTPS
 
             if (IsGrounded)
             {
-                Debug.Log("Here2");
                 movementDirection = directionControl * GetCurrentSpeedByState();
 
                 if (isJumping)
