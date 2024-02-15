@@ -5,13 +5,17 @@ namespace SciFiTPS
     [RequireComponent(typeof(BoxCollider))]
     public class QuestReachTrigger : Quest
     {
-        [SerializeField] private GameObject m_owner;
+        [SerializeField] private GameObject[] m_owners;
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject != m_owner) return;
-
-            EventOnCompleted?.Invoke();
+            foreach (var owner in m_owners)
+            {
+                if (other.gameObject == owner)
+                {
+                    OnQuestCompleted?.Invoke();
+                }
+            }
         }
     }
 }

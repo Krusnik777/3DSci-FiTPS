@@ -14,18 +14,18 @@ namespace SciFiTPS
 
         private Transform reachedPoint;
 
-        private void Start()
+        private void Awake()
         {
             m_indicator.gameObject.SetActive(false);
 
             m_questCollector.EventOnQuestReceived += OnQuestReceived;
-            m_questCollector.EventOnLastQuestCompleted += OnLastQuestCompleted;
+            m_questCollector.EventOnQuestCompleted += OnQuestCompleted;
         }
 
         private void OnDestroy()
         {
             m_questCollector.EventOnQuestReceived -= OnQuestReceived;
-            m_questCollector.EventOnLastQuestCompleted -= OnLastQuestCompleted;
+            m_questCollector.EventOnQuestCompleted -= OnQuestCompleted;
         }
 
         private void Update()
@@ -50,10 +50,11 @@ namespace SciFiTPS
         {
             reachedPoint = quest.ReachedPoint;
 
-            m_indicator.gameObject.SetActive(true);
+            if (reachedPoint != null) m_indicator.gameObject.SetActive(true);
+            else m_indicator.gameObject.SetActive(false);
         }
 
-        private void OnLastQuestCompleted()
+        private void OnQuestCompleted(Quest quest)
         {
             reachedPoint = null;
 

@@ -455,7 +455,7 @@ namespace SciFiTPS
                 }
             }
 
-            m_agent.isStopped = false;
+            if (!m_zlorp.IsDead) m_agent.isStopped = false;
         }
 
         #endregion

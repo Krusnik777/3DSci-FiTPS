@@ -13,13 +13,13 @@ namespace SciFiTPS
         public Quest NextQuest => m_nextQuest;
         public Transform ReachedPoint => m_reachedPoint;
 
-        public UnityAction EventOnCompleted;
+        public UnityEvent OnQuestCompleted;
 
         private void Update()
         {
-            UpdateComleteCondition();
+            UpdateCompleteCondition();
         }
 
-        protected virtual void UpdateComleteCondition() { }
+        protected virtual void UpdateCompleteCondition() { }
     }
 }

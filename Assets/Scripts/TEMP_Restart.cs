@@ -5,6 +5,8 @@ namespace SciFiTPS
 {
     public class TEMP_Restart : MonoBehaviour
     {
+        [SerializeField] private GameObject[] m_owners;
+
         public void RestartLevel()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -12,7 +14,13 @@ namespace SciFiTPS
 
         private void OnTriggerEnter(Collider other)
         {
-            RestartLevel();
+            foreach (var owner in m_owners)
+            {
+                if (other.gameObject == owner)
+                {
+                    RestartLevel();
+                }
+            }
         }
     }
 }

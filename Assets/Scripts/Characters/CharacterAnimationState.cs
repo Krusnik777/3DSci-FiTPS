@@ -40,6 +40,10 @@ namespace SciFiTPS
 
         private Vector3 inputControl;
 
+        // TEMP
+        private float groundedTimer = 0.2f;
+        private float timer = 0;
+
         private void LateUpdate()
         {
             var movementSpeed = transform.InverseTransformDirection(m_targetCharacterController.velocity);
@@ -73,12 +77,20 @@ namespace SciFiTPS
 
             if (!m_targetCharacterMovement.IsGrounded)
             {
+                timer += Time.fixedDeltaTime;
+
+                if (timer < groundedTimer) return;
+
                 m_targetAnimator.SetFloat(m_animatorParameterNames.Jump, movementSpeed.y);
 
                 if (movementSpeed.y < 0 && m_targetCharacterMovement.DistanceToGround > m_minDistanceToGroundByFall)
                 {
                     CrossFade(m_fallFade);
                 }
+            }
+            else
+            {
+                timer = 0;
             }
 
             m_targetAnimator.SetFloat(m_animatorParameterNames.DistanceToGround, m_targetCharacterMovement.DistanceToGround);

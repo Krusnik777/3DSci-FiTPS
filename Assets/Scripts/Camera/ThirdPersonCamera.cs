@@ -72,9 +72,8 @@ namespace SciFiTPS
 
             deltaRotationY = ClampAngle(deltaRotationY, m_minLimitY, m_maxLimitY);
 
-            //m_offset = Vector3.MoveTowards(m_offset, targetOffset, m_offsetChangeRate * Time.deltaTime);
-
-            m_offset = Vector3.Slerp(m_offset, targetOffset, m_offsetChangeRate * Time.deltaTime);
+            m_offset = Vector3.MoveTowards(m_offset, targetOffset, m_offsetChangeRate * Time.deltaTime);
+            //m_offset = Vector3.Slerp(m_offset, targetOffset, m_offsetChangeRate * Time.deltaTime);
 
             //Quaternion finalRotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(deltaRotationY, deltaRotationX, 0), 0.25f);
             Quaternion finalRotation = Quaternion.Euler(deltaRotationY, deltaRotationX, 0);

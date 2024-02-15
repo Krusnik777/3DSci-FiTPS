@@ -18,7 +18,7 @@ namespace SciFiTPS
 
             EventOnQuestReceived?.Invoke(m_currentQuest);
 
-            m_currentQuest.EventOnCompleted += OnQuestCompleted;
+            m_currentQuest.OnQuestCompleted.AddListener(OnQuestCompleted);
         }
 
         private void Start()
@@ -28,7 +28,7 @@ namespace SciFiTPS
 
         private void OnQuestCompleted()
         {
-            m_currentQuest.EventOnCompleted -= OnQuestCompleted;
+            m_currentQuest.OnQuestCompleted.RemoveListener(OnQuestCompleted);
 
             EventOnQuestCompleted?.Invoke(m_currentQuest);
 

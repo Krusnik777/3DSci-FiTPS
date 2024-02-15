@@ -156,7 +156,7 @@ namespace SciFiTPS
 
             TargetDirectionControl = Vector3.zero;
         }
-
+        
         private bool OnSlope()
         {
 
@@ -224,12 +224,11 @@ namespace SciFiTPS
             
             if (Physics.Raycast(downRay, out hit)) distanceToGround = hit.distance;
 
-            /*
-            if (Physics.Raycast(transform.position, -Vector3.up, out hit, 1000))
+            /*if (Physics.Raycast(transform.position, -Vector3.up, out hit, 1000))
             {
                 distanceToGround = Vector3.Distance(transform.position, hit.point);
-            }
-            */
+            }*/
+            
         }
     }
 }
