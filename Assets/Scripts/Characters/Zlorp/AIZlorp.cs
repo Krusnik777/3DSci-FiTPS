@@ -35,7 +35,10 @@ namespace SciFiTPS
         [SerializeField] private float m_resetDetectionFactor = 1f; 
         [Header("Indicators")]
         [SerializeField] private DetectionIndicator m_detectionIndicator;
+
+        public AIBehaviour Behaviour { get => m_aIBehaviour; set => m_aIBehaviour = value; }
         public DetectionIndicator DetectionIndicator => m_detectionIndicator;
+        public int PatrolPathIndex { get => m_patrolPathNodeIndex; set => m_patrolPathNodeIndex = value; }
 
         private NavMeshPath m_navMeshPath;
         private PatrolPathNode currentPathNode;
@@ -52,7 +55,7 @@ namespace SciFiTPS
 
         private bool isPlayerDetected;
 
-        private void UpdatePotentialTarget() => potentialTarget = Player.Instance.gameObject;
+        private void FindPotentialTarget() => potentialTarget = Player.Instance.gameObject;
 
         private bool CheckAgentReachedDestination()
         {
@@ -94,6 +97,11 @@ namespace SciFiTPS
 
         public void SetPursueTarget(Transform target) => pursueTarget = target;
 
+        public void SetPosition(Vector3 pos)
+        {
+            m_agent.Warp(pos);
+        }
+
         public void StopSearch()
         {
             if (searchRoutine != null)
@@ -103,9 +111,16 @@ namespace SciFiTPS
             }
         }
 
+        public void OnHeard()
+        {
+            if (m_listener != null) return;
+
+            StartPursue();
+        }
+
         private void Start()
         {
-            UpdatePotentialTarget();
+            FindPotentialTarget();
 
             m_characterMovement.UpdatePosition = false;
             m_navMeshPath = new NavMeshPath();
@@ -114,6 +129,8 @@ namespace SciFiTPS
 
             m_zlorp.EventOnDamaged += OnGetDamage;
             m_zlorp.EventOnDeath.AddListener(OnDeath);
+
+            FindPatrolPath();
         }
 
         private void OnDisable()
@@ -253,7 +270,12 @@ namespace SciFiTPS
 
         private void ActionUpdateTarget()
         {
-            if (potentialTarget == null) return;
+            if (potentialTarget == null) 
+            {
+                FindPotentialTarget();
+
+                if (potentialTarget == null) return; 
+            }
 
             ActionCheckPeripheralVision();
 
@@ -350,6 +372,8 @@ namespace SciFiTPS
             {
                 m_agent.isStopped = false;
                 m_characterMovement.UnAim();
+
+                if (m_patrolPath == null) FindPatrolPath();
                 SetDestinationByPathNode(m_patrolPath.GetRandomPathNode());
 
                 sideDetectionEnabled = true;
@@ -359,6 +383,8 @@ namespace SciFiTPS
             {
                 m_agent.isStopped = false;
                 m_characterMovement.UnAim();
+
+                if (m_patrolPath == null) FindPatrolPath();
                 SetDestinationByPathNode(m_patrolPath.GetNextNode(ref m_patrolPathNodeIndex));
 
                 sideDetectionEnabled = true;
@@ -415,6 +441,24 @@ namespace SciFiTPS
             {
                 Player.Instance.StopPursue();
                 isPlayerDetected = false;
+            }
+        }
+
+        private void FindPatrolPath()
+        {
+            if (m_patrolPath == null)
+            {
+                PatrolPath[] patrolPaths = FindObjectsOfType<PatrolPath>();
+                float minDistance = float.MaxValue;
+
+                for (int i = 0; i < patrolPaths.Length; i++)
+                {
+                    if (Vector3.Distance(transform.position, patrolPaths[i].transform.position) < minDistance)
+                    {
+                        //minDistance = Vector3.Distance(transform.position, cubeAreas[i].transform.position);
+                        m_patrolPath = patrolPaths[i];
+                    }
+                }
             }
         }
 

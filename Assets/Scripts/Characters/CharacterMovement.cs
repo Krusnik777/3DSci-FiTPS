@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SciFiTPS
 {
@@ -20,6 +21,8 @@ namespace SciFiTPS
         [HideInInspector] public Vector3 TargetDirectionControl;
 
         public bool UpdatePosition = true;
+
+        public UnityAction<Vector3> EventOnLand;
 
         private bool isInteracting;
         public bool IsInteractiong => isInteracting;
@@ -212,9 +215,14 @@ namespace SciFiTPS
                 movementDirection = transform.TransformDirection(movementDirection);
             }
 
-            movementDirection += Physics.gravity * Time.deltaTime;
+            if (!m_characterController.isGrounded) movementDirection += Physics.gravity * Time.deltaTime;
 
             if (UpdatePosition) m_characterController.Move(movementDirection * Time.deltaTime);
+
+            if (m_characterController.isGrounded && Mathf.Abs(movementDirection.y) > 2)
+            {
+                EventOnLand?.Invoke(movementDirection);
+            }
         }
 
         private void UpdateDistanceToGround()

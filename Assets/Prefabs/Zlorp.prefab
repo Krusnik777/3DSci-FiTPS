@@ -677,8 +677,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_teamId: 1
+  m_entityId: 1
   m_weapon: {fileID: 3523357453358416583}
   m_spreadShootRig: {fileID: 4929105172137548215}
+  m_zlorpAI: {fileID: 5550269993384954605}
 --- !u!114 &5550269993384954605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1567,6 +1569,7 @@ MonoBehaviour:
   m_animator: {fileID: 3890726493853632}
   m_actionAnimationName: ActionDeath
   m_timeDuration: 0.1
+  m_endActionByAnimation: 0
 --- !u!1 &9177197946760934083
 GameObject:
   m_ObjectHideFlags: 0

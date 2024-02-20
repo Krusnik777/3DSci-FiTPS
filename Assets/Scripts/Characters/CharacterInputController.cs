@@ -18,10 +18,21 @@ namespace SciFiTPS
             m_thirdPersonCamera.SetTarget(m_characterMovement.transform);
         }
 
-        private void Start()
+        public void LockMouse()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+
+        public void UnlockMouse()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        private void Start()
+        {
+            LockMouse();
         }
 
         private void Update()

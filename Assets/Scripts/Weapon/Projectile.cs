@@ -48,6 +48,12 @@ namespace SciFiTPS
             {
                 var impactEffect = Instantiate(m_impactEffectHandler.GetImpactPrefab(col), pos, Quaternion.LookRotation(normal));
                 impactEffect.transform.SetParent(col.transform);
+                
+                /*
+                if (col.GetComponent<Surface>() != null)
+                {
+                    impactEffect.UpdateType(col.GetComponent<Surface>().Type);
+                }*/
             }
 
             Destroy(gameObject);

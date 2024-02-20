@@ -61,7 +61,7 @@ namespace SciFiTPS
             defaultMinRotationLimit = m_minLimitY;
             defaultMaxRotationLimit = m_maxLimitY;
 
-            transform.SetParent(null);
+            //transform.SetParent(null);
         }
 
         private void Update()

@@ -1901,6 +1901,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_teamId: 0
+  m_entityId: 6
   m_maxLinearSpeed: 50
   m_engineSFX: {fileID: 4967848422829192983}
   m_engineSFXModifier: 1

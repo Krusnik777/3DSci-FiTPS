@@ -15,6 +15,12 @@ namespace SciFiTPS
 
         private bool isPlayingAnimation;
 
+        private void OnDestroy()
+        {
+            if (m_timer != null)
+                m_timer.EventOnTick -= OnTimerTick;
+        }
+
         public override void StartAction()
         {
             base.StartAction();

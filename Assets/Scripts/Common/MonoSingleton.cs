@@ -8,6 +8,8 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
     public static T Instance { get; private set; }
 
+    public void NullInstance() => Instance = null;
+
     protected virtual void Awake()
     {
         if (Instance != null)

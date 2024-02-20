@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_nickname: 
-  m_velocity: 20
+  m_velocity: 100
   m_lifeTime: 20
-  m_damage: 2
+  m_damage: 5
   m_impactEffectHandler: {fileID: -521282782848203262}
 --- !u!114 &-521282782848203262
 MonoBehaviour:

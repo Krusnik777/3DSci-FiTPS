@@ -37,6 +37,8 @@ namespace SciFiTPS
             m_drone.EventOnDeath.AddListener(OnDroneDeath);
             m_drone.EventOnDamaged += OnGetDamage;
 
+            FindMovementArea();
+
             //currentDirection = transform.forward; // For OLD
         }
 
@@ -111,6 +113,24 @@ namespace SciFiTPS
                 if (ai != null && ai.enabled)
                 {
                     ai.SetShootTarget(other);
+                }
+            }
+        }
+
+        private void FindMovementArea()
+        {
+            if (m_movementArea == null)
+            {
+                CubeArea[] cubeAreas = FindObjectsOfType<CubeArea>();
+                float minDistance = float.MaxValue;
+
+                for (int i = 0; i < cubeAreas.Length; i++)
+                {
+                    if (Vector3.Distance(transform.position, cubeAreas[i].transform.position) < minDistance)
+                    {
+                        //minDistance = Vector3.Distance(transform.position, cubeAreas[i].transform.position);
+                        m_movementArea = cubeAreas[i];
+                    }
                 }
             }
         }

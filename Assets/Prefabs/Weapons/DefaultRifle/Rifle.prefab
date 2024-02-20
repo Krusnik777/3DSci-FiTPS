@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 2119175620655672637}
   - component: {fileID: 717396486431480542}
   - component: {fileID: 1160682875787221589}
+  - component: {fileID: 7948143099866115835}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -318,6 +319,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7948143099866115835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603113142403020419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c47d425c9fb8249ac628f0c9f5468c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9174706768233464534
 GameObject:
   m_ObjectHideFlags: 0

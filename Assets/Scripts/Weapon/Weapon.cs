@@ -22,7 +22,7 @@ namespace SciFiTPS
 
         private Destructible m_owner;
 
-        private AudioSource m_audioSource;
+        private NoiseAudioSource m_audioSource;
 
         #region PublicAPI
 
@@ -83,7 +83,7 @@ namespace SciFiTPS
         private void Start()
         {
             m_owner = transform.root.GetComponent<Destructible>();
-            m_audioSource = GetComponent<AudioSource>();
+            m_audioSource = GetComponent<NoiseAudioSource>();
             m_primaryEnergy = m_primaryMaxEnergy;
         }
 

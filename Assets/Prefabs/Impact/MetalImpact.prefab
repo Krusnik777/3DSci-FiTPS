@@ -9523,6 +9523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_lifeTime: 20
+  m_decal: {fileID: 5756466982663508865}
 --- !u!1 &5756466982663508865
 GameObject:
   m_ObjectHideFlags: 0

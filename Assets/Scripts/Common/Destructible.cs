@@ -7,7 +7,7 @@ namespace SciFiTPS
     /// <summary>
     /// Destructible object on scene. Has HitPoints
     /// </summary>
-    public class Destructible : Entity
+    public class Destructible : Entity, ISerializableEntity
     {
         #region Properties
 
@@ -58,6 +58,12 @@ namespace SciFiTPS
         #endregion
 
         #region PublicAPI
+
+        public void SetHitPoints(int hitPoints)
+        {
+            m_currentHitPoins = Mathf.Clamp(hitPoints, 0, m_hitPoints);
+        }
+
         /// <summary>
         /// Applying Damage to object
         /// </summary>
@@ -195,6 +201,42 @@ namespace SciFiTPS
         public void SetTeam(int teamId)
         {
             m_teamId = teamId;
+        }
+
+        // Serialize
+        [System.Serializable]
+        public class State
+        {
+            public Vector3 Position;
+            public int HitPoints;
+
+            public State() { }
+        }
+
+        [SerializeField] private int m_entityId;
+        public long EntityId => m_entityId;
+
+        public virtual bool IsSerializable()
+        {
+            return m_currentHitPoins > 0;
+        }
+
+        public virtual string SerializeState()
+        {
+            State s = new State();
+
+            s.Position = transform.position;
+            s.HitPoints = m_currentHitPoins;
+
+            return JsonUtility.ToJson(s);
+        }
+
+        public virtual void DeserializeState(string state)
+        {
+            State s = JsonUtility.FromJson<State>(state);
+
+            transform.position = s.Position;
+            m_currentHitPoins = s.HitPoints;
         }
     }
 }

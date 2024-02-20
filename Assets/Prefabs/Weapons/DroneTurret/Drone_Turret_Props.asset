@@ -17,7 +17,7 @@ MonoBehaviour:
   m_rateOfFire: 0.15
   m_energyUsage: 2
   m_energyRegenPerSecond: 6
-  m_energyAmountToStartFire: 50
+  m_energyAmountToStartFire: 30
   m_spreadShotRange: 0.5
   m_spreadShotDistanceFactor: 0.05
   m_launchSFX: {fileID: 8300000, guid: 0ff450135b13acb4daf1e9e05e211007, type: 3}

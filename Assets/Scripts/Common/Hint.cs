@@ -14,14 +14,18 @@ namespace SciFiTPS
 
         private void Start()
         {
-            m_canvas = GetComponent<Canvas>();
-            m_canvas.worldCamera = Camera.main;
-            m_lookTransform = Camera.main.transform;
-            m_target = Player.Instance.transform;
+            FindTarget();
         }
 
         private void Update()
         {
+            if (m_target == null || m_lookTransform == null)
+            {
+                FindTarget();
+
+                if (m_target == null || m_lookTransform == null) return;
+            }
+
             m_hint.transform.LookAt(m_lookTransform);
 
             if (Vector3.Distance(transform.position, m_target.position) < m_activeRadius)
@@ -29,6 +33,14 @@ namespace SciFiTPS
                 m_hint.SetActive(true);
             }
             else m_hint.SetActive(false);
+        }
+
+        private void FindTarget()
+        {
+            m_canvas = GetComponent<Canvas>();
+            m_canvas.worldCamera = Camera.main;
+            m_lookTransform = Camera.main?.transform;
+            m_target = Player.Instance.transform;
         }
 
         #if UNITY_EDITOR

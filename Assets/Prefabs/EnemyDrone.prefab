@@ -177,6 +177,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_teamId: 2
+  m_entityId: 2
   m_mainMesh: {fileID: 1625061481064976385}
   m_turrets:
   - {fileID: 8489865938826690122}
