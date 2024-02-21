@@ -8,6 +8,7 @@ namespace SciFiTPS
         [SerializeField] private ImpactType m_impactType;
         public ImpactType Type => m_impactType;
 
+        /*
         [ContextMenu("AddToAllObject")]
         public void AddToAllObject()
         {
@@ -23,7 +24,7 @@ namespace SciFiTPS
                     }
                 }
             }
-
         }
+        */
     }
 }

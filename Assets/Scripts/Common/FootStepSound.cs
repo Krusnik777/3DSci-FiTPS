@@ -13,6 +13,7 @@ namespace SciFiTPS
     {
         [SerializeField] private FootStepProperties[] m_properties;
         [SerializeField] private CharacterController m_characterController;
+        [SerializeField] private CharacterMovement m_characterMovement;
         [SerializeField] private NoiseAudioSource m_noiseAudioSource;
 
         private float m_delay;
@@ -35,7 +36,7 @@ namespace SciFiTPS
 
         private bool IsPlay()
         {
-            if (GetSpeed() < 0.01f || !m_characterController.isGrounded)
+            if (GetSpeed() < 0.01f || !m_characterMovement.IsGrounded)
                 return false;
             else
                 return true;

@@ -20,6 +20,12 @@ namespace SciFiTPS
             m_camera.SetRotationLimit(m_minLimitY, m_maxLimitY);
         }
 
+        public void Stop()
+        {
+            m_vehicle.SetTargetControl(new Vector3(0,9999,0));
+            enabled = false;
+        }
+
         protected virtual void Start()
         {
             if (m_camera != null)

@@ -549,6 +549,7 @@ GameObject:
   - component: {fileID: 3336907265972421052}
   - component: {fileID: 1566200933239137827}
   - component: {fileID: 8489865938826690122}
+  - component: {fileID: 5295723131238885876}
   m_Layer: 0
   m_Name: LeftTurret
   m_TagString: Untagged
@@ -685,6 +686,18 @@ MonoBehaviour:
   m_firePoint: {fileID: 3085115453248272273}
   m_muzzleParticleSystem: {fileID: 6506879460041269767}
   m_primaryMaxEnergy: 100
+--- !u!114 &5295723131238885876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2705727550717989967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c47d425c9fb8249ac628f0c9f5468c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8248506122954093606
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,6 +709,7 @@ GameObject:
   - component: {fileID: 5087025272159970631}
   - component: {fileID: 5831327497531680329}
   - component: {fileID: 1745258473661023368}
+  - component: {fileID: 8460136339197865234}
   m_Layer: 0
   m_Name: RightTurret
   m_TagString: Untagged
@@ -832,6 +846,18 @@ MonoBehaviour:
   m_firePoint: {fileID: 344597714674364382}
   m_muzzleParticleSystem: {fileID: 1908776690233073015}
   m_primaryMaxEnergy: 100
+--- !u!114 &8460136339197865234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248506122954093606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c47d425c9fb8249ac628f0c9f5468c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8921704796991358883
 GameObject:
   m_ObjectHideFlags: 0

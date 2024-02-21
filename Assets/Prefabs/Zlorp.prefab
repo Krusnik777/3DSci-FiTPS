@@ -578,7 +578,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.7
-  m_BaseOffset: -0.1
+  m_BaseOffset: -0.001
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!143 &201520242717208527
@@ -681,6 +681,7 @@ MonoBehaviour:
   m_weapon: {fileID: 3523357453358416583}
   m_spreadShootRig: {fileID: 4929105172137548215}
   m_zlorpAI: {fileID: 5550269993384954605}
+  m_hearingDistance: 30
 --- !u!114 &5550269993384954605
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,16 +15,26 @@ namespace SciFiTPS
             public string State;
         }
 
+        public static string FileName = "Test.dat";
+
         [SerializeField] private PrefabsDataBase m_prefabsDataBase;
 
         public void SaveScene()
         {
-            SaveToFile("Test.dat");
+            SaveToFile(FileName);
         }
 
         public void LoadScene()
         {
-            LoadFromFile("Test.dat");
+            LoadFromFile(FileName);
+        }
+
+        public void DeleteSave()
+        {
+            if (File.Exists(Application.persistentDataPath + "/" + FileName))
+            {
+                File.Delete(Application.persistentDataPath + "/" + FileName);
+            }
         }
 
         private void SaveToFile(string filePath)
@@ -67,6 +77,8 @@ namespace SciFiTPS
         {
             Player.Instance.NullInstance();
 
+            QuestsMaster.Instance.ClearListsForAllQuests();
+
             foreach (var entity in FindObjectsOfType<Entity>())
             {
                 Destroy(entity.gameObject);
@@ -82,6 +94,11 @@ namespace SciFiTPS
                 loadedObjects = (List<SceneObjectState>) bf.Deserialize(file);
                 file.Close();
             }
+            else
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+                return;
+            }
 
             foreach (var v in loadedObjects)
             {
@@ -90,6 +107,8 @@ namespace SciFiTPS
                     GameObject p = m_prefabsDataBase.CreatePlayer();
 
                     p.GetComponent<ISerializableEntity>().DeserializeState(v.State);
+
+                    QuestsMaster.Instance.AssignOwnerForQuests(p);
 
                     loadedObjects.Remove(v);
                     break;
@@ -101,6 +120,17 @@ namespace SciFiTPS
                 GameObject g = m_prefabsDataBase.CreateEntityFromId(v.EntityId);
 
                 g.GetComponent<ISerializableEntity>().DeserializeState(v.State);
+
+                if (g.GetComponent<Vehicle>() != null)
+                {
+                    QuestsMaster.Instance.AssignOwnerForQuests(g);
+                }
+
+                if (g.TryGetComponent(out Destructible dest))
+                {
+                    if (dest.AssignedKillQuest != null)
+                        QuestsMaster.Instance.AssignTargetForKillQuest(dest.AssignedKillQuest, dest);
+                }
             }
 
             Debug.Log("Scene loaded! Path file: " + Application.persistentDataPath + "/" + filePath);
@@ -108,6 +138,7 @@ namespace SciFiTPS
 
         private void Update()
         {
+            /*
             if (Input.GetKeyDown(KeyCode.F5))
             {
                 SaveScene();
@@ -116,7 +147,7 @@ namespace SciFiTPS
             if (Input.GetKeyDown(KeyCode.F8))
             {
                 LoadScene();
-            }
+            }*/
         }
     }
 }

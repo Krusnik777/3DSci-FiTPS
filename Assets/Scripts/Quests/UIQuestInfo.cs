@@ -64,7 +64,7 @@ namespace SciFiTPS
             {
                 var defeatQuest = quest as QuestKillDestructibles;
 
-                m_task.text = quest.Properties.Task + ": " + defeatQuest.AmountKilled.ToString() + "/" + defeatQuest.TargetAmount.ToString();
+                if (m_task != null) m_task.text = quest.Properties.Task + ": " + defeatQuest.AmountKilled.ToString() + "/" + defeatQuest.TargetAmount.ToString();
             }
         }
     }

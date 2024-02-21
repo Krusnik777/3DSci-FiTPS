@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ecf60f2755e5d4095e1d084c5a74f8, type: 3}
   m_Name: 02. ExploreTheArea
   m_EditorClassIdentifier: 
+  m_type: 1
+  m_firstInLine: 0
   m_description: Explore The Area
   m_task: Go to the marker

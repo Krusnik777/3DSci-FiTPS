@@ -46,6 +46,11 @@ namespace SciFiTPS
         private bool isDead = false;
         public bool IsDead => isDead;
 
+        private QuestKillDestructibles assignedKillQuest;
+        public QuestKillDestructibles AssignedKillQuest => assignedKillQuest;
+
+        public void AssignKillQuest(QuestKillDestructibles killQuest) => assignedKillQuest = killQuest;
+
         #endregion
 
         #region UnityEvents
@@ -209,6 +214,7 @@ namespace SciFiTPS
         {
             public Vector3 Position;
             public int HitPoints;
+            public QuestKillDestructibles AssignedQuest;
 
             public State() { }
         }
@@ -227,6 +233,7 @@ namespace SciFiTPS
 
             s.Position = transform.position;
             s.HitPoints = m_currentHitPoins;
+            if (assignedKillQuest != null) s.AssignedQuest = assignedKillQuest;
 
             return JsonUtility.ToJson(s);
         }
@@ -237,6 +244,7 @@ namespace SciFiTPS
 
             transform.position = s.Position;
             m_currentHitPoins = s.HitPoints;
+            if (s.AssignedQuest != null) assignedKillQuest = s.AssignedQuest;
         }
     }
 }

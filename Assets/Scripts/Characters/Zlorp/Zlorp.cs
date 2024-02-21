@@ -36,6 +36,7 @@ namespace SciFiTPS
         public class AIZlorpState
         {
             public Vector3 Position;
+            public Quaternion Rotation;
             public int HitPoints;
             public int Behaviour;
             public int PatrolPathIndex;
@@ -48,8 +49,19 @@ namespace SciFiTPS
             AIZlorpState s = new AIZlorpState();
 
             s.Position = transform.position;
+            s.Rotation = transform.rotation;
+
             s.HitPoints = HitPoints;
-            s.Behaviour = (int) m_zlorpAI.Behaviour;
+
+            if (m_zlorpAI.DefaultBehaviour == AIZlorp.AIBehaviour.Null)
+            {
+                s.Behaviour = (int)m_zlorpAI.Behaviour;
+            }
+            else
+            {
+                s.Behaviour = (int)m_zlorpAI.DefaultBehaviour;
+            }
+
             s.PatrolPathIndex = m_zlorpAI.PatrolPathIndex;
 
             return JsonUtility.ToJson(s);
@@ -60,6 +72,7 @@ namespace SciFiTPS
             AIZlorpState s = JsonUtility.FromJson<AIZlorpState>(state);
 
             m_zlorpAI.SetPosition(s.Position);
+            transform.rotation = s.Rotation;
             SetHitPoints(s.HitPoints);
             m_zlorpAI.Behaviour = (AIZlorp.AIBehaviour) s.Behaviour;
             m_zlorpAI.PatrolPathIndex = s.PatrolPathIndex;

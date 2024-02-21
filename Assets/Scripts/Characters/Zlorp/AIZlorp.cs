@@ -40,6 +40,9 @@ namespace SciFiTPS
         public DetectionIndicator DetectionIndicator => m_detectionIndicator;
         public int PatrolPathIndex { get => m_patrolPathNodeIndex; set => m_patrolPathNodeIndex = value; }
 
+        private AIBehaviour defaultBehaviour;
+        public AIBehaviour DefaultBehaviour => defaultBehaviour;
+
         private NavMeshPath m_navMeshPath;
         private PatrolPathNode currentPathNode;
 
@@ -467,12 +470,16 @@ namespace SciFiTPS
         private IEnumerator SetBehaviourOnTime(AIBehaviour state, float seconds)
         {
             AIBehaviour prevBehaviour = m_aIBehaviour;
+            defaultBehaviour = prevBehaviour;
+
             m_aIBehaviour = state;
             StartBehaviour(m_aIBehaviour);
 
             yield return new WaitForSeconds(seconds);
 
             StartBehaviour(prevBehaviour);
+
+            defaultBehaviour = AIBehaviour.Null;
         }
 
         private IEnumerator SearchAround()
